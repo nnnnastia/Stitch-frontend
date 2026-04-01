@@ -1,0 +1,252 @@
+@use "/src/sass/base/variables.scss" as *;
+
+/* =========================
+   PRODUCT CARD
+========================= */
+
+.pCard {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+    padding: 8px;
+    width: 260px;
+
+    background: #fff;
+    border: 0.0625rem solid rgba(0, 15, 34, 0.08);
+    border-radius: 1.25rem;
+
+    transition: transform 220ms ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* =========================
+   MEDIA
+========================= */
+
+.pCard__media {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    aspect-ratio: 1 / 1;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+}
+
+.pCard__badges {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: grid;
+    gap: 6px;
+}
+
+.pCard__badge {
+    display: inline-flex;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 10px;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    &--new {
+        background: rgba(120, 170, 255, 0.35);
+        color: $blue-darkest;
+    }
+
+    &--hit {
+        background: rgba(0, 15, 34, 0.08);
+        color: $blue-darkest;
+    }
+
+    &--sale {
+        background: rgba(0, 15, 34, 0.85);
+        color: #fff;
+    }
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.pCard__body {
+    padding: 10px 6px 6px;
+}
+
+.pCard__title {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(0, 15, 34, 0.7);
+    min-height: 25px;
+}
+
+.pCard__seller {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0, 15, 34, 0.7);
+}
+
+.pCard__price {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.pCard__priceNow {
+    font-weight: 1000;
+    color: rgba(0, 15, 34, 0.85);
+}
+
+.pCard__priceOld {
+    font-weight: 800;
+    color: rgba(0, 15, 34, 0.4);
+    text-decoration: line-through;
+}
+
+/* =========================
+   EXPANDABLE ACTIONS
+========================= */
+
+.pCard--expand {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: visible;
+}
+
+.pCard--expand:hover,
+.pCard--expand:focus-within {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    z-index: 30;
+}
+
+.pCard__actions {
+    position: absolute;
+    left: -0.0625rem;
+    right: -0.0625rem;
+    top: calc(100% - 1px);
+    z-index: 40;
+
+    padding: 10px;
+    background: #fff;
+    border: 0.0625rem solid rgba(0, 15, 34, 0.08);
+    border-top: none;
+    border-radius: 0 0 1.625rem 1.625rem;
+
+    box-shadow: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 220ms ease;
+}
+
+.pCard--expand:hover .pCard__actions,
+.pCard--expand:focus-within .pCard__actions {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.pCard__actions-inner {
+    display: grid;
+    grid-template-columns: 1fr 44px 44px;
+    gap: 10px;
+    align-items: center;
+}
+
+/* =========================
+   QUANTITY
+========================= */
+
+.qty {
+    display: grid;
+    grid-template-columns: 38px 1fr 38px;
+    align-items: center;
+
+    height: 44px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid rgba(0, 15, 34, 0.12);
+    overflow: hidden;
+}
+
+.qty__btn {
+    height: 44px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    font-size: 20px;
+    font-weight: 1000;
+    color: rgba(0, 15, 34, 0.7);
+
+    &:active {
+        transform: scale(0.97);
+    }
+}
+
+.qty__num {
+    text-align: center;
+    font-weight: 1000;
+    color: rgba(0, 15, 34, 0.85);
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.pCard__buy {
+    height: 44px;
+    width: 44px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+
+    background: rgba(0, 15, 34, 0.85);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 1000;
+
+    &:active {
+        transform: scale(0.97);
+    }
+}
+
+.pCard__fav {
+    height: 44px;
+    width: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 15, 34, 0.12);
+    background: #fff;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:active {
+        transform: scale(0.97);
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (hover: none) {
+    .pCard__actions {
+        max-height: 90px;
+        opacity: 1;
+        transform: none;
+        padding: 10px;
+    }
+}

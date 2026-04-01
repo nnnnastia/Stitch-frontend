@@ -1,0 +1,66 @@
+.account-input {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    &__label {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #6b7280; // muted
+    }
+
+    &__wrapper {
+        position: relative;
+    }
+
+    &__field {
+        width: 800px;
+        height: 40px;
+        padding: 0 16px;
+        font-size: 14px;
+
+        border-radius: 6px;
+        border: 1px solid #d1d5db; // fieldBorder
+        outline: none;
+
+        background-color: #ffffff;
+        color: #111827;
+
+        transition: border 0.2s;
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+
+        &:focus {
+            border-color: #111827;
+        }
+
+        &:disabled {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+    }
+
+    &__toggle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 15px;
+
+        display: flex;
+        align-items: center;
+
+        background: transparent;
+        border: none;
+        cursor: pointer;
+
+        color: #6b7280;
+
+        &:hover {
+            color: #111827;
+        }
+    }
+}

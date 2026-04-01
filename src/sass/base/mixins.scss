@@ -1,0 +1,19 @@
+@use "/src/sass/base/variables.scss" as *;
+
+@mixin button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 25px; // pill
+    border: 1px solid $navy-dark;
+    text-align: center;
+    background: rgba($blue-light, 0.85);
+    color: $navy-dark;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    cursor: pointer;
+}

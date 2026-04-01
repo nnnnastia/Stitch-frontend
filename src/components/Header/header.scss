@@ -1,0 +1,399 @@
+@use "/src/sass/base/variables.scss" as *;
+
+/* =========================
+   UI helpers (Header only)
+========================= */
+
+.uiIconBtn {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+
+    border: $bdr;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+
+    cursor: pointer;
+    color: $blue-darkest;
+    text-decoration: none;
+
+    box-shadow: 0 8px 20px rgba(0, 15, 34, 0.06);
+
+    i {
+        font-size: 18px;
+        line-height: 1;
+    }
+
+    &:active {
+        transform: scale(0.97);
+    }
+
+    &--cart {
+        position: relative;
+    }
+}
+
+.uiBadge {
+    position: absolute;
+    right: -6px;
+    top: -6px;
+
+    min-width: 18px;
+    height: 18px;
+    padding: 0 6px;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 11px;
+    font-weight: 900;
+    color: #fff;
+    background: $blue-darkest;
+    border-radius: 999px;
+}
+
+.uiPillBtn {
+    display: none;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    padding: 14px 0;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    border-bottom: $bdr;
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 12px 12px;
+        border-radius: 22px;
+
+        background: #fff;
+        border: $bdr;
+        box-shadow: $shadow-1, $shadow-2;
+    }
+
+    &__left,
+    &__right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    &__searchField {
+        display: none;
+    }
+
+    &__logo {
+        width: 44px;
+        height: 44px;
+        display: block;
+    }
+
+    &__brand {
+        display: none;
+        font-weight: 1000;
+        letter-spacing: 0.02em;
+    }
+
+    &__nav {
+        display: none;
+    }
+}
+
+/* =========================
+   Drawer
+========================= */
+
+.uiOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 15, 34, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 1001;
+
+    &--active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.uiDrawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+
+    width: 92vw;
+    max-width: 380px;
+
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+
+    border-right: $bdr;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    z-index: 1002;
+
+    &--active {
+        transform: translateX(0);
+        box-shadow: 18px 0 44px rgba(0, 15, 34, 0.18);
+    }
+
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 14px 12px;
+        border-bottom: $bdr;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 1000;
+        color: $blue-darkest;
+    }
+
+    &__content {
+        height: calc(100vh - 66px);
+        overflow-y: auto;
+        padding: 12px 12px 20px;
+    }
+}
+
+.uiDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: $blue-darkest;
+}
+
+.uiSection {
+    padding: 14px 0;
+
+    &+& {
+        border-top: 1px solid rgba(0, 15, 34, 0.06);
+    }
+
+    &__title {
+        margin-bottom: 10px;
+        font-size: 12px;
+        font-weight: 1000;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(0, 15, 34, 0.55);
+    }
+}
+
+.uiGrid2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.uiChip {
+    height: 44px;
+    border-radius: 16px;
+    border: $bdr;
+    background: rgba(0, 15, 34, 0.04);
+
+    display: grid;
+    place-items: center;
+
+    text-decoration: none;
+    color: $blue-darkest;
+    font-weight: 900;
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.uiStack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.uiLinkRow {
+    padding: 12px 12px;
+    border-radius: 16px;
+    border: $bdr;
+    background: rgba(0, 15, 34, 0.03);
+
+    text-decoration: none;
+    color: $blue-darkest;
+    font-weight: 800;
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.uiRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.uiSegBtn {
+    height: 40px;
+    padding: 0 14px;
+
+    border-radius: 999px;
+    border: $bdr-strong;
+    background: rgba(0, 15, 34, 0.04);
+    color: $blue-darkest;
+    font-weight: 1000;
+
+    cursor: pointer;
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &--active {
+        background: $blue-darkest;
+        color: #fff;
+    }
+}
+
+/* =========================
+   TABLET / DESKTOP
+========================= */
+@media (min-width: 768px) {
+    .header {
+        padding: 18px 0;
+
+        &__brand {
+            display: inline;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .header {
+
+        &__bar {
+            padding: 14px 16px;
+            border-radius: 24px;
+        }
+
+        &__burger {
+            display: none;
+        }
+
+        &__nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        &__navLink {
+            height: 40px;
+            padding: 0 14px;
+
+            display: inline-flex;
+            align-items: center;
+
+            border-radius: 999px;
+            border: $bdr;
+            background: rgba(255, 255, 255, 0.60);
+            color: rgba(0, 15, 34, 0.78);
+            text-decoration: none;
+
+            font-weight: 800;
+            font-size: 13px;
+
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+
+        &__searchBtn {
+            display: none;
+        }
+
+        &__searchField {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            height: 44px;
+            padding: 0 14px;
+
+            border-radius: 999px;
+            border: $bdr;
+            background: rgba(0, 15, 34, 0.04);
+        }
+
+        &__searchIcon {
+            opacity: 0.75;
+        }
+
+        &__searchInput {
+            width: 260px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: $blue-darkest;
+            font-size: 14px;
+        }
+
+        &__searchInput {
+            width: 300px;
+        }
+    }
+
+    .uiPillBtn {
+        height: 44px;
+        padding: 0 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+
+        border: $bdr;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+
+        color: $blue-darkest;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(0, 15, 34, 0.06);
+
+        span {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        i {
+            font-size: 18px;
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+}

@@ -1,0 +1,71 @@
+.checkEmail {
+    min-height: calc(100vh - 161px);
+    /* підстав реальну висоту header */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkEmail__card {
+    background: #fff;
+    padding: 40px 32px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+}
+
+.checkEmail__icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.checkEmail__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1f2937;
+}
+
+.checkEmail__text {
+    font-size: 15px;
+    color: #4b5563;
+    margin-bottom: 8px;
+}
+
+.checkEmail__hint {
+    font-size: 14px;
+    color: #9ca3af;
+    margin-bottom: 24px;
+}
+
+.checkEmail__btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: #6366f1;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.checkEmail__btn:hover {
+    background: #4f46e5;
+}
+
+/* анімація */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

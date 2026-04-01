@@ -1,0 +1,335 @@
+@use "/src/sass/base/variables.scss" as *;
+
+/* =========================
+   CTA button (local)
+========================= */
+.uiPrimaryBtn {
+    height: 48px;
+    padding: 0 16px;
+    margin: 20px auto 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    border-radius: $r-btn;
+    border: $bdr-strong;
+
+    background: $blue-darkest;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 900;
+
+    position: relative;
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: inherit;
+        border: 2px solid rgba(0, 15, 34, 0.14);
+        animation: pulse 2s ease-out infinite;
+        pointer-events: none;
+    }
+}
+
+/* =========================
+   PROMO layout
+========================= */
+.promo {
+    padding-top: 20px;
+
+    &__grid {
+        display: grid;
+        gap: 14px;
+        overflow-x: clip;
+    }
+}
+
+/* LEFT card */
+.heroCard {
+    min-width: 0;
+    min-height: 300px;
+    background: #fff;
+    border: $bdr;
+    border-radius: $r-card;
+    box-shadow: $shadow-1, $shadow-2;
+
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: -120px -160px auto auto;
+        width: 340px;
+        height: 340px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(0, 15, 34, 0.10), transparent 60%);
+        pointer-events: none;
+    }
+
+    &__title {
+        margin: 12px 0 8px;
+        font-size: 24px;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: $blue-darkest;
+    }
+
+    &__text {
+        margin: 0 0 14px;
+        font-size: 14px;
+        line-height: 1.55;
+        color: $muted;
+        // max-width: 56ch;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 12px;
+    }
+
+    &__meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+    }
+}
+
+.metaItem {
+    padding: 12px;
+    border-radius: 18px;
+    border: $bdr;
+    background: rgba(0, 15, 34, 0.03);
+
+    &__num {
+        font-size: 16px;
+        font-weight: 1000;
+        color: $blue-darkest;
+    }
+
+    &__txt {
+        margin-top: 2px;
+        font-size: 12px;
+        font-weight: 800;
+        color: rgba(0, 15, 34, 0.62);
+    }
+}
+
+/* =========================
+   RIGHT promo slider
+========================= */
+
+.sliderCard {
+    min-width: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+
+    &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 6px 10px;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 1000;
+        color: $blue-darkest;
+        letter-spacing: -0.02em;
+    }
+
+    &__all {
+        text-decoration: none;
+        font-weight: 900;
+        color: rgba(0, 15, 34, 0.7);
+
+        &:hover {
+            color: $blue-darkest;
+        }
+    }
+}
+
+.promoSlider {
+    border-radius: $r-card;
+    overflow: hidden;
+    /* щоб слайди і overlay не вилазили */
+    border: $bdr;
+    box-shadow: $shadow-1, $shadow-2;
+    background: #fff;
+
+    .swiper-pagination {
+        bottom: 10px !important;
+    }
+
+    .swiper-pagination-bullet {
+        opacity: 0.45;
+    }
+
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+    }
+}
+
+.promoSlide {
+    position: relative;
+    display: block;
+    height: 100%;
+    min-height: 280px;
+    text-decoration: none;
+    color: #fff;
+    overflow: hidden;
+
+    &:hover .promoSlide__img {
+        transform: scale(1.05);
+    }
+
+    &:hover .promoSlide__cta {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+    }
+
+    &__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.01);
+        transition: transform 450ms ease;
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg,
+                rgba(0, 15, 34, 0.75),
+                rgba(0, 15, 34, 0.25) 55%,
+                rgba(0, 15, 34, 0.65));
+    }
+
+    &__content {
+        position: relative;
+        height: 100%;
+        padding: 16px;
+        display: grid;
+        align-content: space-between;
+        gap: 10px;
+    }
+
+    &__badge {
+        justify-self: start;
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-weight: 1000;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(6px);
+    }
+
+    &__txt {
+        max-width: 30ch;
+    }
+
+    &__h {
+        font-size: 22px;
+        font-weight: 1000;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+
+    &__p {
+        margin-top: 6px;
+        font-size: 13px;
+        line-height: 1.5;
+        opacity: 0.9;
+    }
+
+    &__cta {
+        justify-self: start;
+        padding: 10px 12px;
+        border-radius: $r-btn;
+        font-weight: 1000;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(6px);
+        transition: transform 250ms ease, filter 250ms ease;
+    }
+}
+
+/* =========================
+   TABLET (>=768) — рівна висота
+========================= */
+@media (min-width: 768px) {
+
+    .promo {
+        padding-top: 30px;
+
+        &__grid {
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: stretch; // ок, тепер безпечно
+        }
+    }
+
+    .heroCard {
+        padding: 22px;
+
+        &__title {
+            font-size: 30px;
+        }
+
+        &__text {
+            font-size: 15px;
+        }
+    }
+}
+
+/* =========================
+   DESKTOP (>=1200)
+========================= */
+@media (min-width: 1200px) {
+    .promo {
+        padding-top: 40px;
+
+        &__grid {
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+        }
+    }
+
+
+    .heroCard {
+        &__title {
+            font-size: 34px;
+        }
+
+        &__meta {
+            gap: 12px;
+        }
+    }
+
+
+    .promoSlide {
+        min-height: 380px;
+
+        &__h {
+            font-size: 24px;
+        }
+    }
+}

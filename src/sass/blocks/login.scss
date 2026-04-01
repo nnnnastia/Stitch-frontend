@@ -1,0 +1,228 @@
+@use "/src/sass/base/variables.scss" as *;
+
+.login {
+    padding-top: 30px;
+
+
+    &__h1 {
+        font-size: 20px;
+        font-weight: 600;
+        color: $blue-darkest;
+        margin: 0 19px;
+    }
+
+    &__register {
+        margin: 8px 0 0 19px;
+        font-size: 14px;
+        color: $blue-darkest;
+        font-weight: 400;
+        margin-bottom: 18px;
+
+        &-link {
+            font-weight: 600;
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+
+    &__form {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+
+    }
+
+    &__field {
+        position: relative;
+        width: 300px;
+        margin: 0 auto;
+        height: 45px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border-radius: 14px;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        padding: 12px 14px;
+        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+        // width: 20px;
+
+        &:focus-within {
+            border-color: rgba(17, 24, 39, 0.35);
+            box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08);
+            background: #fff;
+        }
+    }
+
+    &__input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $blue-darkest;
+        font-size: 14px;
+        line-height: 1.2;
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+
+
+    }
+
+    // кнопка “око”
+    &__eye-btn {
+        position: relative;
+        left: 8px;
+        border: none;
+        background: transparent;
+        padding: 6px;
+        cursor: pointer;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+
+    }
+
+
+    &__eye-icon {
+        font-size: 18px;
+        color: #9ca3af;
+        transition: color .2s ease;
+        border: none;
+
+        .login__field:focus-within & {
+            color: $blue-darkest;
+        }
+    }
+
+    // Forgot
+    &__forgot {
+        font-size: 13px;
+        color: #6b7280;
+        text-decoration: none;
+        width: fit-content;
+        margin: 0 19px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    // Submit button (Увійти)
+    button[type="submit"] {
+        margin: 6px auto;
+        width: 300px;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        height: 45px;
+        background: $blue-darkest;
+        color: #fff;
+
+        transition: transform .12s ease, opacity .12s ease, box-shadow .2s ease;
+
+        &:hover {
+            box-shadow: 0 10px 24px rgba(17, 24, 39, 0.18);
+        }
+
+        &:active {
+            transform: translateY(1px);
+            opacity: 0.95;
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+    }
+
+    // Divider "or"
+    &__divider {
+        display: grid;
+        place-items: center;
+        margin: 18px 0 20px 14px;
+        position: relative;
+        width: 300px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: #e5e7eb;
+            transform: translateY(-50%);
+        }
+
+        span {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            padding: 0 10px;
+            font-size: 12px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+    }
+
+    // OAuth buttons
+    &__oauth {
+        display: grid;
+        gap: 12px;
+    }
+
+    &__oauth-btn {
+
+        width: 300px;
+        margin: 0 auto;
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        color: $blue-darkest;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        height: 45px;
+        transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+
+        &:hover {
+            border-color: rgba(17, 24, 39, 0.25);
+            box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+    }
+
+    &__oauth-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    // трошки “карточності” блоку (не змінює твій layout, просто виглядає охайніше)
+    &__wrapper {
+        max-width: 420px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #eef2f7;
+        border-radius: 18px;
+        padding: 18px 14px;
+        box-shadow: 0 18px 40px rgba(17, 24, 39, 0.06);
+    }
+}

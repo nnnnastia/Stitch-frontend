@@ -1,0 +1,120 @@
+@use "/src/sass/base/variables.scss" as *;
+
+/* =========================
+   PROMO SLIDER CARD
+========================= */
+
+.sliderCard {
+    min-width: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* =========================
+   SWIPER
+========================= */
+
+.promoSlider {
+    border-radius: $r-card;
+    overflow: hidden;
+    border: $bdr;
+    box-shadow: $shadow-1, $shadow-2;
+    background: #fff;
+
+    .swiper-pagination {
+        bottom: 10px !important;
+    }
+
+    .swiper-pagination-bullet {
+        opacity: 0.45;
+    }
+
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+    }
+}
+
+/* =========================
+   SLIDE
+========================= */
+
+.promoSlide {
+    position: relative;
+    display: block;
+    height: 100%;
+    min-height: 280px;
+    text-decoration: none;
+    color: #fff;
+    overflow: hidden;
+
+    &:hover .promoSlide__img {
+        transform: scale(1.05);
+    }
+
+    &:hover .promoSlide__cta {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+    }
+
+    &__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.01);
+        transition: transform 450ms ease;
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg,
+                rgba(0, 15, 34, 0.75),
+                rgba(0, 15, 34, 0.25) 55%,
+                rgba(0, 15, 34, 0.65));
+    }
+
+    &__content {
+        position: relative;
+        height: 100%;
+        padding: 16px;
+        display: grid;
+        align-content: space-between;
+        gap: 10px;
+    }
+
+    &__badge {
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-weight: 1000;
+        font-size: 12px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(6px);
+    }
+
+    &__h {
+        font-size: 22px;
+        font-weight: 1000;
+    }
+
+    &__p {
+        margin-top: 6px;
+        font-size: 13px;
+        opacity: 0.9;
+    }
+
+    &__cta {
+        padding: 10px 12px;
+        border-radius: $r-btn;
+        font-weight: 1000;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(6px);
+        transition: transform 250ms ease, filter 250ms ease;
+    }
+}

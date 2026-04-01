@@ -1,0 +1,26 @@
+.products {
+    &__grid {
+
+        display: flex;
+        gap: 12px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 0 16px 12px; // місце під скролбар
+    }
+}
+
+.products__grid::-webkit-scrollbar {
+    height: 10px; // товщина як на скріні
+}
+
+.products__grid::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.18); // світліший трек
+    border-radius: 999px;
+}
+
+.products__grid::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.55); // темніший “повзунок”
+    border-radius: 999px;
+}

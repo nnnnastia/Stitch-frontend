@@ -1,0 +1,39 @@
+@use "/src/sass/base/variables.scss" as *;
+
+/* =========================
+   PRODUCT CAROUSEL
+========================= */
+
+.hp__clip {
+    overflow-x: hidden;
+    overflow-y: visible;
+    padding-bottom: 70px;
+}
+
+.hp__slider {
+    position: relative;
+    overflow: visible;
+}
+
+.hp__slider .swiper-wrapper,
+.hp__slider .swiper-slide {
+    overflow: visible;
+}
+
+/* =========================
+   SWIPER ARROWS
+========================= */
+
+.hp__slider .swiper-button-prev,
+.hp__slider .swiper-button-next {
+    width: 20px;
+    height: 20px;
+    color: $blue-darkest;
+    transform: translateY(-50%);
+}
+
+.hp__slider .swiper-button-prev::after,
+.hp__slider .swiper-button-next::after {
+    font-size: 18px;
+    font-weight: 900;
+}

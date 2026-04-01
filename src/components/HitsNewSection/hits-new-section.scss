@@ -1,0 +1,57 @@
+@use "/src/sass/base/variables.scss" as *;
+
+/* =========================
+   SECTION: Hits / New
+========================= */
+
+.hp {
+    padding-top: 40px;
+}
+
+.hp__head {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.hp__tabs {
+    display: inline-flex;
+    gap: 22px;
+    align-items: center;
+}
+
+.hp__tab {
+    background: transparent;
+    border: none;
+    padding: 8px 2px;
+    cursor: pointer;
+
+    font-weight: 900;
+    font-size: 18px;
+    color: rgba(0, 15, 34, 0.55);
+    position: relative;
+
+    &.is-active {
+        color: $blue-darkest;
+    }
+
+    &.is-active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -6px;
+
+        height: 2px;
+        border-radius: 2px;
+        background: rgba(0, 15, 34, 0.65);
+    }
+}
+
+.hp__skeleton {
+    text-align: center;
+    padding: 24px 12px;
+    color: rgba(0, 15, 34, 0.7);
+    font-size: 16px;
+    line-height: 1.5;
+}

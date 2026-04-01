@@ -1,0 +1,121 @@
+.footer {
+    margin-top: 0;
+    padding: 32px 0 24px;
+    background: #f8f8fa;
+    border-top: 1px solid #e5e7eb;
+}
+
+// .footer__container {
+//     max-width: 1280px;
+//     margin: 0 auto;
+//     padding: 0 24px;
+// }
+
+.footer__top {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 0.8fr;
+    gap: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.footer__brand {
+    max-width: 320px;
+}
+
+.footer__logo {
+    margin-bottom: 12px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #0f172a;
+}
+
+.footer__text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #667085;
+}
+
+.footer__nav,
+.footer__contacts,
+.footer__bottom-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer__link,
+.footer__bottom-link {
+    width: fit-content;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #334155;
+    text-decoration: none;
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.footer__link:hover,
+.footer__bottom-link:hover {
+    color: #0b1a33;
+    transform: translateX(2px);
+}
+
+.footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 20px;
+}
+
+.footer__copy {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.footer__bottom-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .footer__top {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer__bottom-links {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .footer {
+        margin-top: 56px;
+        padding: 24px 0 20px;
+    }
+
+    .footer__container {
+        padding: 0 16px;
+    }
+
+    .footer__logo {
+        font-size: 24px;
+    }
+
+    .footer__text,
+    .footer__link,
+    .footer__bottom-link {
+        font-size: 14px;
+    }
+}
