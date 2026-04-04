@@ -1,0 +1,45 @@
+.admin-users-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background-color: #ffffff;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    &__input,
+    &__select {
+        width: 350px;
+        min-height: 44px;
+        padding: 0 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    &__button {
+        min-height: 42px;
+        padding: 0 16px;
+        border: none;
+        border-radius: 10px;
+        background-color: #111827;
+        color: #ffffff;
+        cursor: pointer;
+
+        &--secondary {
+            background-color: #e5e7eb;
+            color: #111827;
+        }
+    }
+}

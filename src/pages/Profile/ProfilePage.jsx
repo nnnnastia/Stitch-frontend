@@ -14,24 +14,26 @@ export default function ProfilePage() {
 
     useEffect(() => {
         async function fetchMe() {
-            const token = localStorage.getItem("token");
+            try {
+                const res = await fetch(`${API}/api/users/me`, {
+                    credentials: "include",
+                });
 
-            const res = await fetch(`${API}/api/users/me`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+                if (res.status === 401 || res.status === 404) {
+                    navigate("/login", { replace: true });
+                    return;
+                }
 
-            if (res.status === 401 || res.status === 404) {
-                localStorage.removeItem("token");
+                const data = await res.json();
+                setUser(data.user);
+            } catch (error) {
+                console.error(error);
                 navigate("/login", { replace: true });
-                return;
             }
-
-            const data = await res.json();
-            setUser(data.user);
         }
 
         fetchMe();
-    }, [navigate, location.key]); // ✅ головне
+    }, [navigate, location.key]);
 
     if (!user) return <p>Завантаження профілю...</p>;
 

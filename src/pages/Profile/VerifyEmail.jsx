@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export default function VerifyEmail() {
     const [params] = useSearchParams();
     const token = params.get("token");
@@ -11,7 +13,7 @@ export default function VerifyEmail() {
     useEffect(() => {
         async function run() {
             try {
-                const res = await fetch(`http://localhost:5000/api/api/auth/verify-email?token=${encodeURIComponent(token)}`);
+                const res = await fetch(`${API}/api/auth/verify-email?token=${encodeURIComponent(token)}`);
                 const data = await res.json().catch(() => ({}));
 
                 if (res.ok) {

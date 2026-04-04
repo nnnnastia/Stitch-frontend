@@ -1,0 +1,53 @@
+.admin-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+    background: #f5f6fa;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+}
+
+.admin-sidebar {
+    padding: 24px;
+    background: #111827;
+    color: #fff;
+
+    &__title {
+        margin-bottom: 24px;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    &__nav {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        a {
+            padding: 12px 14px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        a:hover,
+        a.active {
+            background: rgba(255, 255, 255, 0.12);
+        }
+    }
+}
+
+.admin-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+.admin-main {
+    padding: 24px;
+}

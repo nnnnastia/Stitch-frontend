@@ -1,9 +1,9 @@
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export const authService = {
     logout: async () => {
         try {
-            const response = await fetch(`${API}/auth/logout`, {
+            const response = await fetch(`${API}api/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fileUrl } from "../../utils/fileUrl.jsx";
+import { fileUrl } from "../../utils/fileUrl.js";
 import { Link } from "react-router-dom";
 
 const priceFormatter = new Intl.NumberFormat("uk-UA");

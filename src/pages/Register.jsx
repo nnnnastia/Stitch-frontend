@@ -5,6 +5,8 @@ import googleIcon from "../assets/icon/google-icon.svg";
 import facebookIcon from "../assets/icon/facebook-icon.png";
 import appleIcon from "../assets/icon/apple-icon.svg";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const INITIAL_FORM = {
     userName: "",
     userSurname: "",
@@ -65,8 +67,9 @@ export default function Register() {
                 password: form.password,
             };
 
-            const res = await fetch("http://localhost:5000/api/api/auth/register", {
+            const res = await fetch(`${API}/api/auth/register`, {
                 method: "POST",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });

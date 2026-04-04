@@ -16,6 +16,11 @@ import VerifyEmail from './pages/Profile/VerifyEmail.jsx';
 import CheckEmail from './components/CheckEmail/CheckEmail.jsx';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 import ProductDetails from './pages/ProductDetails/ProductDetails.jsx';
+import CatalogPage from './pages/Catalog/CatalogPage.jsx';
+import AdminLayout from './pages/Admin/AdminLayout/AdminLayout.jsx';
+import AdminRoute from './components/AdminRoute/AdminRoute.jsx';
+import AdminCategoriesPage from './pages/Admin/AdminCategoriesPage/AdminCategoriesPage.jsx';
+import AdminUsersPage from './pages/Admin/AdminUsersPage/AdminUsersPage.jsx';
 
 function App() {
   return (
@@ -43,7 +48,19 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
+          }
+        >
+          <Route path="categories" element={<AdminCategoriesPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+        </Route>
 
+        <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

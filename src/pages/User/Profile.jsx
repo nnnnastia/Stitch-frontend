@@ -32,6 +32,7 @@ export function Profile() {
         defaultValues: {
             firstName: '',
             lastName: '',
+            phoneNumber: '',
             oldPassword: '',
             newPassword: '',
             repeatPassword: '',
@@ -46,8 +47,9 @@ export function Profile() {
         setSuccessMessage('');
 
         reset({
-            firstName: '',
-            lastName: '',
+            firstName: currentUser.firstName ?? '',
+            lastName: currentUser.lastName ?? '',
+            phoneNumber: currentUser.phoneNumber ?? '',
             oldPassword: '',
             newPassword: '',
             repeatPassword: '',
@@ -65,6 +67,7 @@ export function Profile() {
                 reset({
                     firstName: currentUser.firstName ?? '',
                     lastName: currentUser.lastName ?? '',
+                    phoneNumber: currentUser.phoneNumber ?? '',
                     oldPassword: '',
                     newPassword: '',
                     repeatPassword: '',
@@ -76,7 +79,7 @@ export function Profile() {
                 }
 
                 setPageError(
-                    err instanceof Error ? err.message : 'Failed to load profile',
+                    err instanceof Error ? err.message : 'Помилка при завантаженні профілю',
                 );
             } finally {
                 setIsLoading(false);
@@ -118,16 +121,16 @@ export function Profile() {
             const maxSize = 5 * 1024 * 1024;
 
             if (!allowedTypes.includes(file.type)) {
-                throw new Error('Only JPEG, PNG, and WEBP files are allowed');
+                throw new Error('Лише JPEG, PNG, та WEBP файли можна додавати.');
             }
 
             if (file.size > maxSize) {
-                throw new Error('Maximum file size is 5 MB');
+                throw new Error('Максимальний розмір файлу 5 MB');
             }
 
             const updatedUser = await usersService.uploadAvatar(file);
             setUser(updatedUser);
-            setSuccessMessage('Avatar updated successfully');
+            setSuccessMessage('Аватар успішно оновлено!');
         } catch (err) {
             if (err instanceof Error && err.message.includes('401')) {
                 handleUnauthorized();
@@ -135,7 +138,7 @@ export function Profile() {
             }
 
             setSubmitError(
-                err instanceof Error ? err.message : 'Failed to upload avatar',
+                err instanceof Error ? err.message : 'Помилка при завантажені фото',
             );
         } finally {
             setIsAvatarUploading(false);
@@ -152,10 +155,12 @@ export function Profile() {
 
             const normalizedFirstName = values.firstName.trim();
             const normalizedLastName = values.lastName.trim();
+            const normalizedPhoneNumber = values.phoneNumber.trim();
 
             const profileChanged =
                 normalizedFirstName !== (user.firstName ?? '') ||
-                normalizedLastName !== (user.lastName ?? '');
+                normalizedLastName !== (user.lastName ?? '') ||
+                normalizedPhoneNumber !== (user.phoneNumber ?? '');
 
             const hasAnyPasswordValue =
                 values.oldPassword.trim() !== '' ||
@@ -169,12 +174,12 @@ export function Profile() {
             let updatedUser = user;
 
             if (profileChanged) {
-                await usersService.updateMe({
+                updatedUser = await usersService.updateMe({
                     firstName: normalizedFirstName,
                     lastName: normalizedLastName,
+                    phoneNumber: normalizedPhoneNumber,
                 });
 
-                updatedUser = await usersService.getMe();
                 setUser(updatedUser);
             }
 
@@ -182,23 +187,25 @@ export function Profile() {
                 await usersService.changePassword({
                     oldPassword: values.oldPassword.trim(),
                     newPassword: values.newPassword.trim(),
+                    repeatPassword: values.repeatPassword.trim(),
                 });
             }
 
             reset({
                 firstName: updatedUser.firstName ?? normalizedFirstName,
                 lastName: updatedUser.lastName ?? normalizedLastName,
+                phoneNumber: updatedUser.phoneNumber ?? normalizedPhoneNumber,
                 oldPassword: '',
                 newPassword: '',
                 repeatPassword: '',
             });
 
             if (profileChanged && hasAnyPasswordValue) {
-                setSuccessMessage('Profile and password updated successfully');
+                setSuccessMessage('Профіль та пароль успішно оновлено!');
             } else if (profileChanged) {
-                setSuccessMessage('Profile updated successfully');
+                setSuccessMessage('Профіль успішно оновлено!');
             } else {
-                setSuccessMessage('Password updated successfully');
+                setSuccessMessage('Пароль успішно оновлено!');
             }
         } catch (err) {
             if (err instanceof Error && err.message.includes('401')) {
@@ -207,7 +214,7 @@ export function Profile() {
             }
 
             setSubmitError(
-                err instanceof Error ? err.message : 'Failed to update profile',
+                err instanceof Error ? err.message : 'Помилка під час оновлення профілю',
             );
         } finally {
             setIsSaving(false);
@@ -220,7 +227,7 @@ export function Profile() {
     };
 
     if (isLoading) {
-        return <div className="profile__state">Loading...</div>;
+        return <div className="profile__state">Завантаження...</div>;
     }
 
     if (pageError) {
@@ -228,14 +235,14 @@ export function Profile() {
     }
 
     if (!user) {
-        return <div className="profile__state">User not found</div>;
+        return <div className="profile__state">Користувача не знайдено</div>;
     }
 
     return (
         <section className="profile">
             <div className="container">
                 <h1 className="profile__title">
-                    My Account
+                    Мій Акаунт
                 </h1>
 
                 <div className="profile__layout">
@@ -261,7 +268,7 @@ export function Profile() {
                                 disabled={isSaving}
                                 className="profile__submit"
                             >
-                                {isSaving ? 'Saving...' : 'Save changes'}
+                                {isSaving ? 'Збереження...' : 'Зберегти зміни'}
                             </button>
 
                             {submitError && (

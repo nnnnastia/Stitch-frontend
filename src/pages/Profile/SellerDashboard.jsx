@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { fileUrl } from "../../utils/fileUrl.jsx";
+import { fileUrl } from "../../utils/fileUrl.js";
 import ProfileMenuItem from "../../components/ProfileMenuItem/ProfileMenuItem.jsx";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -78,7 +78,6 @@ export default function SellerDashboard() {
     }
 
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
 
     const stats = useMemo(() => {
         const total = products.length;
@@ -94,13 +93,8 @@ export default function SellerDashboard() {
         async function load() {
             setLoading(true);
 
-            if (!token) {
-                if (alive) setLoading(false);
-                return;
-            }
-
             const pRes = await fetch(`${API}/api/seller/profile/me`, {
-                headers: { Authorization: `Bearer ${token}` },
+                credentials: "include",
             });
 
             if (!alive) return;

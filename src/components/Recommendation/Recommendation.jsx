@@ -8,16 +8,8 @@ import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const API = "http://localhost:5000/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-
-/**
- * Рекомендації (слайдер) — шаблон
- * Очікуваний бекенд: GET /api/recommendations
- * Повертає масив продуктів у тому ж форматі, що і /api/products
- *
- * Якщо бекенду ще нема — можна тимчасово підставити /api/products
- */
 export default function Recommendation() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,26 +25,24 @@ export default function Recommendation() {
                 setLoading(true);
                 setError("");
 
-                const res = await promo(`${API}/api/recommendations/me?limit=12`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-                    },
+                const res = await fetch(`${API}/api/recommendations/me?limit=12`, {
+                    credentials: "include",
                 });
 
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-                const data = await res.json();   // 👈 1. отримали відповідь
+                const data = await res.json();
                 if (!alive) return;
 
-                setReason(data?.reason || "");   // 👈 2. ОТУТ саме 👈
+                setReason(data?.reason || "");
 
                 const list = Array.isArray(data?.items) ? data.items : [];
-                setItems(list);                  // 👈 3. записали товари
+                setItems(list);
             } catch (e) {
                 if (alive) {
                     setError("Не вдалося завантажити рекомендації.");
                     setItems([]);
-                    setReason("");                 // 👈 на помилці очищаємо
+                    setReason("");
                 }
             } finally {
                 if (alive) setLoading(false);
@@ -60,11 +50,8 @@ export default function Recommendation() {
         }
 
         load();
-        return () => {
-            alive = false;
-        };
+        return () => { alive = false; };
     }, []);
-
 
 
     return (

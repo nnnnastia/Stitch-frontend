@@ -4,7 +4,7 @@ import { AccountInput } from '../AccountInput/AccountInput';
 export function AccountDetailsForm({ user, control, errors }) {
     return (
         <section className="account-details-form">
-            <h2 className="account-details-form__title">Account Details</h2>
+            <h2 className="account-details-form__title">Деталі акаунту</h2>
 
             <div className="account-details-form__fields">
                 <div className="account-details-form__group">
@@ -13,8 +13,8 @@ export function AccountDetailsForm({ user, control, errors }) {
                         control={control}
                         render={({ field }) => (
                             <AccountInput
-                                label="First name"
-                                placeholder="First name"
+                                label="Ім'я"
+                                placeholder="Ім'я"
                                 value={field.value ?? ''}
                                 onChange={field.onChange}
                             />
@@ -33,8 +33,8 @@ export function AccountDetailsForm({ user, control, errors }) {
                         control={control}
                         render={({ field }) => (
                             <AccountInput
-                                label="Last name"
-                                placeholder="Last name"
+                                label="Прізвище"
+                                placeholder="Прізвище"
                                 value={field.value ?? ''}
                                 onChange={field.onChange}
                             />
@@ -53,8 +53,8 @@ export function AccountDetailsForm({ user, control, errors }) {
                         control={control}
                         render={({ field }) => (
                             <AccountInput
-                                label="Phone number"
-                                placeholder="Phone number"
+                                label="Номер телефону"
+                                placeholder="Номер телефону"
                                 value={field.value ?? ''}
                                 onChange={field.onChange}
                             />
@@ -69,7 +69,7 @@ export function AccountDetailsForm({ user, control, errors }) {
 
                 <div className="account-details-form__group">
                     <AccountInput
-                        label="Email"
+                        label="Електронна пошта"
                         type="email"
                         value={user?.email ?? ''}
                         disabled={true}

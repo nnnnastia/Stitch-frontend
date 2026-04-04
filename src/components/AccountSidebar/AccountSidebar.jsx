@@ -1,12 +1,12 @@
 import { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Camera, User as UserIcon } from 'lucide-react';
-
+import { fileUrl } from '../../utils/fileUrl.js';
 import { ROUTES } from '../../constants/index.js';
 
 const SIDEBAR_LINKS = [
-    { to: ROUTES.PROFILE, end: true, label: 'Account' },
-    { to: ROUTES.MYORDERS, label: 'Orders' },
+    { to: ROUTES.PROFILE, end: true, label: 'Акаунт' },
+    { to: ROUTES.MYORDERS, label: 'Замовлення' },
 ];
 
 export function AccountSidebar({
@@ -44,7 +44,7 @@ export function AccountSidebar({
                 <div className="account-sidebar__avatar-wrapper">
                     {user?.avatarUrl ? (
                         <img
-                            src={user.avatarUrl}
+                            src={fileUrl(user.avatarUrl)}
                             alt="avatar"
                             className="account-sidebar__avatar"
                         />
@@ -96,7 +96,7 @@ export function AccountSidebar({
 
                     <li>
                         <span className="account-sidebar__link account-sidebar__link--disabled">
-                            Wishlist
+                            Список бажань
                         </span>
                     </li>
 
@@ -106,7 +106,7 @@ export function AccountSidebar({
                             onClick={onLogout}
                             className="account-sidebar__logout"
                         >
-                            Log Out
+                            Вийти
                         </button>
                     </li>
                 </ul>

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avatarPlaceholder from "../assets/avatar_placeholder.png"; // шлях під себе
 
-const API = "http://localhost:5000/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function EditProfile() {
     const [form, setForm] = useState({
@@ -25,14 +25,8 @@ export default function EditProfile() {
     useEffect(() => {
         async function loadMe() {
             try {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    navigate("/login", { replace: true });
-                    return;
-                }
-
                 const res = await fetch(`${API}/api/users/me`, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    credentials: "include",
                 });
 
                 const text = await res.text();
@@ -98,11 +92,6 @@ export default function EditProfile() {
         e.preventDefault();
 
         try {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                navigate("/login", { replace: true });
-                return;
-            }
 
             const fd = new FormData();
             fd.append("userName", form.userName);
@@ -112,7 +101,7 @@ export default function EditProfile() {
 
             const res = await fetch(`${API}/api/users/me`, {
                 method: "PUT",
-                headers: { Authorization: `Bearer ${token}` },
+                credentials: "include",
                 body: fd,
             });
 

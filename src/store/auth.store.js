@@ -1,26 +1,19 @@
 import { create } from "zustand";
 
 export const useAuthStore = create((set) => ({
-    token: localStorage.getItem("token") || null,
-    role: localStorage.getItem("role") || null,
     user: null,
+    role: localStorage.getItem("role") || null,
+    isAuth: false,
 
-    isAuth: Boolean(localStorage.getItem("token")),
-
-    setAuth: ({ token, role, user = null }) => {
-        if (token) {
-            localStorage.setItem("token", token);
-        }
-
+    setAuth: ({ role, user = null }) => {
         if (role) {
             localStorage.setItem("role", role);
         }
 
         set({
-            token,
             role,
             user,
-            isAuth: Boolean(token),
+            isAuth: true,
         });
     },
 
@@ -28,14 +21,13 @@ export const useAuthStore = create((set) => ({
         set({
             user,
             role: user?.role || null,
+            isAuth: true,
         }),
 
     logout: () => {
-        localStorage.removeItem("token");
         localStorage.removeItem("role");
 
         set({
-            token: null,
             role: null,
             user: null,
             isAuth: false,

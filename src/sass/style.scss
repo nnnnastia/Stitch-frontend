@@ -23,3 +23,10 @@
 @use "../pages/Profile/profile.scss";
 @use "../components/Footer/footer.scss";
 @use "../pages/ProductDetails/productDetails.scss";
+@use "../pages/Catalog/CatalogPage.scss";
+@use "../pages/Admin/AdminLayout/AdminLayout.scss";
+@use "../pages/Admin/AdminCategoriesPage/AdminCategoriesPage.scss";
+@use "../components/Pagination/Pagination.scss";
+@use "../components/AdminUsersFilters/AdminUsersFilters.scss";
+@use "../components/AdminUsersTable/AdminUsersTable.scss";
+@use "../pages/Admin/AdminUsersPage/AdminUsersPage.scss";

@@ -24,13 +24,13 @@ export const profileSchema = z
         phoneNumber: z
             .string()
             .trim()
-            .refine((value) => value.length > 0, {
-                message: 'Phone number is required',
-            })
-            .refine((value) => value.length >= 2, {
-                message: 'Phone number must be at least 2 characters',
-            }),
-
+            .refine(
+                (value) =>
+                    value === '' || /^(\+380\d{9}|380\d{9}|0\d{9})$/.test(value),
+                {
+                    message: 'Invalid phone number format (e.g. +380XXXXXXXXX)',
+                },
+            ),
         oldPassword: z.string(),
         newPassword: z.string(),
         repeatPassword: z.string(),

@@ -17,7 +17,6 @@ export default function SellerProductForm() {
     const [categories, setCategories] = useState([]);
     const [saving, setSaving] = useState(false);
 
-    const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -53,7 +52,7 @@ export default function SellerProductForm() {
         setSaving(true);
         const res = await fetch(`${API}/api/seller/products`, {
             method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            credentials: "include",
             body: fd,
         });
 

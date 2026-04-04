@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fileUrl } from "../../utils/fileUrl";
+import { fileUrl } from "../../utils/fileUrl.js";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const priceFormatter = new Intl.NumberFormat("uk-UA");

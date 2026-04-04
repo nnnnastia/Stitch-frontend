@@ -20,14 +20,6 @@ const buildUrl = (endpoint, params) => {
     return url.toString();
 };
 
-const getAuthHeaders = () => {
-    const token = localStorage.getItem("token");
-
-    return token
-        ? { Authorization: `Bearer ${token}` }
-        : {};
-};
-
 const parseResponse = async (response) => {
     if (!response.ok) {
         let errorMessage = `HTTP error! status: ${response.status}`;
@@ -51,8 +43,8 @@ export const apiClient = {
 
         const response = await fetch(url, {
             method: "GET",
+            credentials: "include",
             headers: {
-                ...getAuthHeaders(),
                 ...(options?.headers || {}),
             },
         });
@@ -63,9 +55,9 @@ export const apiClient = {
     async post(endpoint, data) {
         const response = await fetch(`${API}${endpoint}`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                ...getAuthHeaders(),
             },
             body: JSON.stringify(data),
         });
@@ -76,9 +68,9 @@ export const apiClient = {
     async patch(endpoint, data) {
         const response = await fetch(`${API}${endpoint}`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                ...getAuthHeaders(),
             },
             body: JSON.stringify(data),
         });
@@ -89,9 +81,7 @@ export const apiClient = {
     async patchFormData(endpoint, data) {
         const response = await fetch(`${API}${endpoint}`, {
             method: "PATCH",
-            headers: {
-                ...getAuthHeaders(),
-            },
+            credentials: "include",
             body: data,
         });
 
@@ -101,9 +91,7 @@ export const apiClient = {
     async delete(endpoint) {
         const response = await fetch(`${API}${endpoint}`, {
             method: "DELETE",
-            headers: {
-                ...getAuthHeaders(),
-            },
+            credentials: "include",
         });
 
         return parseResponse(response);

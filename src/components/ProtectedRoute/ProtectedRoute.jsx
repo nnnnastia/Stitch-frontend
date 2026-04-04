@@ -2,11 +2,9 @@ import { Navigate, useLocation } from "react-router-dom";
 
 export default function ProtectedRoute({ children, allowedRoles = [] }) {
     const location = useLocation();
-
-    const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    if (!token) {
+    if (!role) {
         return (
             <Navigate
                 to="/login"

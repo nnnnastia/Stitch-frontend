@@ -4,7 +4,7 @@ import { AccountInput } from '../AccountInput/AccountInput';
 export function PasswordForm({ control, errors }) {
     return (
         <section className="password-form">
-            <h2 className="password-form__title">Password</h2>
+            <h2 className="password-form__title">Пароль</h2>
 
             <div className="password-form__fields">
                 <div className="password-form__group">
@@ -13,9 +13,9 @@ export function PasswordForm({ control, errors }) {
                         control={control}
                         render={({ field }) => (
                             <AccountInput
-                                label="Old password"
+                                label="Старий пароль"
                                 type="password"
-                                placeholder="Old password"
+                                placeholder="Старий пароль"
                                 value={field.value ?? ''}
                                 onChange={field.onChange}
                                 showToggle={true}
@@ -35,9 +35,9 @@ export function PasswordForm({ control, errors }) {
                         control={control}
                         render={({ field }) => (
                             <AccountInput
-                                label="New password"
+                                label="Новий пароль"
                                 type="password"
-                                placeholder="New password"
+                                placeholder="Новий пароль"
                                 value={field.value ?? ''}
                                 onChange={field.onChange}
                                 showToggle={true}
@@ -57,9 +57,9 @@ export function PasswordForm({ control, errors }) {
                         control={control}
                         render={({ field }) => (
                             <AccountInput
-                                label="Repeat new password"
+                                label="Повторіть новий пароль"
                                 type="password"
-                                placeholder="Repeat new password"
+                                placeholder="Повторіть новий пароль"
                                 value={field.value ?? ''}
                                 onChange={field.onChange}
                                 showToggle={true}

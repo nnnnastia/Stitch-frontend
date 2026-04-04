@@ -1,0 +1,132 @@
+.admin-categories {
+    &__header {
+        margin-bottom: 20px;
+    }
+
+    &__title {
+        margin: 0 0 8px;
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    &__subtitle {
+        margin: 0;
+        color: #6b7280;
+    }
+
+    &__message {
+        margin-bottom: 20px;
+        padding: 12px 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    &__layout {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    &__table-wrap,
+    &__form-wrap {
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+    }
+
+    &__form-title {
+        margin: 0 0 16px;
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            font-weight: 600;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+
+        button {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+        }
+    }
+}
+
+.admin-categories-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    input,
+    textarea,
+    select {
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font: inherit;
+    }
+
+    &__checkbox {
+        flex-direction: row !important;
+        align-items: center;
+        gap: 10px !important;
+    }
+
+    &__buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+
+        button {
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: #111827;
+            color: #fff;
+            cursor: pointer;
+
+            &:last-child {
+                background: #fff;
+                color: #111827;
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .admin-categories {
+        &__layout {
+            grid-template-columns: 1fr;
+        }
+    }
+}

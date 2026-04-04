@@ -5,10 +5,9 @@ export default function ProfileButton() {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        const token = localStorage.getItem("token");
         const role = localStorage.getItem("role");
 
-        if (!token) {
+        if (!role) {
             navigate("/login");
             return;
         }
