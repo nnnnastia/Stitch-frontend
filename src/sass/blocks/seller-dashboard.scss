@@ -87,6 +87,10 @@
     box-shadow: $shadow-1;
     transition: transform .15s ease, background .15s ease, border-color .15s ease;
 
+    &--danger {
+        color: rgba(210, 70, 70, 0.95);
+    }
+
     &:hover {
         transform: translateY(-1px);
     }

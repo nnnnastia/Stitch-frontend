@@ -1,13 +1,27 @@
 import { create } from "zustand";
+import { clearAuthStorage } from "../utils/auth";
+
+const initialRole = localStorage.getItem("role");
+const initialUser = (() => {
+    try {
+        return JSON.parse(localStorage.getItem("user") || "null");
+    } catch {
+        return null;
+    }
+})();
 
 export const useAuthStore = create((set) => ({
-    user: null,
-    role: localStorage.getItem("role") || null,
-    isAuth: false,
+    user: initialUser,
+    role: initialRole || null,
+    isAuth: Boolean(initialRole),
 
     setAuth: ({ role, user = null }) => {
         if (role) {
             localStorage.setItem("role", role);
+        }
+
+        if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
         }
 
         set({
@@ -17,15 +31,21 @@ export const useAuthStore = create((set) => ({
         });
     },
 
-    setUser: (user) =>
+    setUser: (user) => {
+        if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("role", user.role || "");
+        }
+
         set({
             user,
             role: user?.role || null,
-            isAuth: true,
-        }),
+            isAuth: Boolean(user),
+        });
+    },
 
     logout: () => {
-        localStorage.removeItem("role");
+        clearAuthStorage();
 
         set({
             role: null,

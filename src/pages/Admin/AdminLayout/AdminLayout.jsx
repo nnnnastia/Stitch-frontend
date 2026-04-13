@@ -1,6 +1,23 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function AdminLayout() {
+    const navigate = useNavigate();
+
+    async function handleLogout() {
+        try {
+            await fetch(`${API}/api/auth/logout`, {
+                method: "POST",
+                credentials: "include",
+            });
+        } catch (error) {
+            console.error("LOGOUT ERROR:", error);
+        } finally {
+            navigate("/login", { replace: true });
+        }
+    }
+
     return (
         <div className="admin-layout">
             <aside className="admin-sidebar">
@@ -11,6 +28,14 @@ export default function AdminLayout() {
                     <NavLink to="/admin/categories">Categories</NavLink>
                     <NavLink to="/admin/orders">Orders</NavLink>
                     <NavLink to="/admin/users">Users</NavLink>
+
+                    <button
+                        type="button"
+                        className="admin-sidebar__logout"
+                        onClick={handleLogout}
+                    >
+                        Вийти
+                    </button>
                 </nav>
             </aside>
 

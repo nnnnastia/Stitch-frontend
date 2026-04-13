@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import googleIcon from "../assets/icon/google-icon.svg";
 import facebookIcon from "../assets/icon/facebook-icon.png";
 import appleIcon from "../assets/icon/apple-icon.svg";
@@ -13,6 +14,7 @@ export default function Login() {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const queryClient = useQueryClient();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -31,9 +33,17 @@ export default function Login() {
                 throw new Error(data.message || "Помилка входу");
             }
 
-            // accessToken можна зберегти лише в пам’яті/state, але не обов’язково в localStorage
             localStorage.setItem("role", data.user.role);
             localStorage.setItem("user", JSON.stringify(data.user));
+
+            queryClient.setQueryData(["me"], data.user);
+            queryClient.removeQueries({ queryKey: ["cart"] });
+
+            await queryClient.invalidateQueries({ queryKey: ["me"] });
+            await queryClient.invalidateQueries({ queryKey: ["cart"] });
+
+            await queryClient.refetchQueries({ queryKey: ["me"] });
+            await queryClient.refetchQueries({ queryKey: ["cart"] });
 
             if (location.state?.from) {
                 navigate(location.state.from, { replace: true });

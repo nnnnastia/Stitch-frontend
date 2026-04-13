@@ -22,7 +22,7 @@ export default function HitsNewSection() {
                 setLoading(true);
                 setError("");
 
-                const res = await fetch(`${API}api/products`, {
+                const res = await fetch(`${API}api/products?limit=100`, {
                     signal: controller.signal,
                 });
 

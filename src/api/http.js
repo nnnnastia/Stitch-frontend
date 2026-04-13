@@ -1,3 +1,6 @@
+import { clearAuthStorage } from "../utils/auth-storage";
+import { getIsLoggingOut } from "../utils/auth-session";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 let refreshPromise = null;
@@ -10,8 +13,11 @@ async function tryRefresh() {
         })
             .then(async (res) => {
                 if (!res.ok) {
-                    throw new Error("Refresh failed");
+                    const error = new Error("Refresh failed");
+                    error.status = res.status;
+                    throw error;
                 }
+
                 return res.json().catch(() => null);
             })
             .finally(() => {
@@ -24,6 +30,8 @@ async function tryRefresh() {
 
 export async function http(path, options = {}, retry = true) {
     const isFormData = options.body instanceof FormData;
+    const isRefreshRequest = path === "/api/auth/refresh" || path === "/auth/refresh";
+    const isLogoutRequest = path === "/api/auth/logout" || path === "/auth/logout";
 
     const response = await fetch(`${API_URL}${path}`, {
         ...options,
@@ -34,23 +42,33 @@ export async function http(path, options = {}, retry = true) {
         },
     });
 
-    if (response.status === 401 && retry) {
+    if (
+        response.status === 401 &&
+        retry &&
+        !isRefreshRequest &&
+        !isLogoutRequest &&
+        !getIsLoggingOut()
+    ) {
         try {
             await tryRefresh();
-
             return http(path, options, false);
-        } catch (refreshError) {
-            localStorage.removeItem("role");
-            localStorage.removeItem("user");
-            window.location.href = "/login";
-            throw refreshError;
+        } catch {
+            clearAuthStorage();
+
+            const error = new Error("Unauthorized");
+            error.status = 401;
+            throw error;
         }
     }
 
     const data = await response.json().catch(() => null);
 
     if (!response.ok) {
-        throw new Error(data?.message || `Request failed with status ${response.status}`);
+        const error = new Error(
+            data?.message || `Request failed with status ${response.status}`
+        );
+        error.status = response.status;
+        throw error;
     }
 
     return data;

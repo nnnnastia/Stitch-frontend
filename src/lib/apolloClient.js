@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-
+import { Observable } from "@apollo/client/utilities";
+import { clearAuthStorage } from "../utils/auth-storage";
 const httpLink = new HttpLink({
     uri: "http://localhost:5000/graphql",
     credentials: "include",
@@ -39,8 +40,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
                 forward(operation).subscribe(observer);
             })
             .catch(() => {
-                localStorage.removeItem("role");
-                localStorage.removeItem("user");
+                clearAuthStorage();
                 window.location.href = "/login";
             });
     });

@@ -9,7 +9,7 @@ import { PasswordForm } from '../../components/PasswordForm/PasswordForm.jsx';
 import { ROUTES } from '../../constants/index.js';
 import { profileSchema } from '../../schemas/profile.schema.js';
 import { usersService } from '../../services/users.service.js';
-import { clearAuthStorage } from '../../utils/auth-storage.js';
+import { useAuth } from '../../hooks/useAuth.js';
 
 export function Profile() {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ export function Profile() {
     const [isAvatarUploading, setIsAvatarUploading] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-
+    const { logout } = useAuth();
     const {
         control,
         handleSubmit,
@@ -221,9 +221,8 @@ export function Profile() {
         }
     };
 
-    const handleLogout = () => {
-        clearAuthStorage(); // очищає localStorage
-        navigate(ROUTES.LOGIN, { replace: true });
+    const handleLogout = async () => {
+        await logout();
     };
 
     if (isLoading) {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { fileUrl } from "../../utils/fileUrl.js";
-import { Link } from "react-router-dom";
+import { AddToCartButton } from "../AddToCartButton/AddToCartButton.jsx";
 
 const priceFormatter = new Intl.NumberFormat("uk-UA");
 
@@ -24,13 +24,13 @@ export default function ProductCard({ p }) {
 
     const addToCart = (e) => {
         blockCardNavigation(e);
-        console.log("ADD TO CART", p._id, qty);
+        console.log("ADD TO CART", p.id, qty);
     };
 
     const toggleFav = (e) => {
         blockCardNavigation(e);
         setIsFav((prev) => !prev);
-        console.log("TOGGLE FAV", p._id);
+        console.log("TOGGLE FAV", p.id);
     };
 
     return (
@@ -90,14 +90,16 @@ export default function ProductCard({ p }) {
                         </button>
                     </div>
 
-                    <button
+                    <AddToCartButton productId={p.id} />
+
+                    {/* <button
                         className="pCard__buy"
                         type="button"
                         onClick={addToCart}
                         aria-label="Додати в кошик"
                     >
                         <span className="icon-basket" />
-                    </button>
+                    </button> */}
 
                     <button
                         className={`pCard__fav ${isFav ? "is-active" : ""}`}

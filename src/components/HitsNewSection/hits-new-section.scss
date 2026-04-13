@@ -5,7 +5,7 @@
 ========================= */
 
 .hp {
-    padding-top: 40px;
+    // padding-top: 40px;
 }
 
 .hp__head {
@@ -14,20 +14,28 @@
     margin-bottom: 30px;
 }
 
+.hp__title {
+    font-size: 20px;
+    font-weight: 900;
+    color: $blue-darkest;
+}
+
 .hp__tabs {
+
     display: inline-flex;
     gap: 22px;
     align-items: center;
 }
 
 .hp__tab {
+    font-family: inherit;
     background: transparent;
     border: none;
     padding: 8px 2px;
     cursor: pointer;
 
     font-weight: 900;
-    font-size: 18px;
+    font-size: 20px;
     color: rgba(0, 15, 34, 0.55);
     position: relative;
 

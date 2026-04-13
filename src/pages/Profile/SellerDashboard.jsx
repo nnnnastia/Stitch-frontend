@@ -20,6 +20,7 @@ function Badge({ text }) {
         text === "Новинка" ? "badge--new" :
             text === "Розпродаж" ? "badge--sale" :
                 text === "Хіт" ? "badge--hit" : "";
+
     return <span className={`badge ${cls}`}>{text}</span>;
 }
 
@@ -32,7 +33,6 @@ function ProductRow({ p, onDelete }) {
                     src={fileUrl(p.coverImage)}
                     alt={p.title}
                 />
-
             </div>
 
             <div className="row__main">
@@ -43,20 +43,30 @@ function ProductRow({ p, onDelete }) {
 
                 <div className="row__meta">
                     <span className="muted">ID: {p.id}</span>
-                    <span className="muted">Оновлено: {new Date(p.updatedAt).toLocaleDateString()}</span>
+                    <span className="muted">
+                        Оновлено: {new Date(p.updatedAt).toLocaleDateString()}
+                    </span>
                 </div>
 
                 {!!p.badges?.length && (
                     <div className="row__badges">
-                        {p.badges.map((b) => <Badge key={b} text={b} />)}
+                        {p.badges.map((b) => (
+                            <Badge key={b} text={b} />
+                        ))}
                     </div>
                 )}
             </div>
 
             <div className="row__actions">
                 <span className="muted">ID: {p.id}</span>
-                <Link className="btn btn--soft" to={`/seller/products/${p.id}/edit`}>Редагувати</Link>
-                <button className="btn btn--danger" type="button" onClick={() => onDelete(p.id)}>
+                <Link className="btn btn--soft" to={`/seller/products/${p.id}/edit`}>
+                    Редагувати
+                </Link>
+                <button
+                    className="btn btn--danger"
+                    type="button"
+                    onClick={() => onDelete(p.id)}
+                >
                     Видалити
                 </button>
             </div>
@@ -68,22 +78,30 @@ export default function SellerDashboard() {
     const [profile, setProfile] = useState(null);
     const [products, setProducts] = useState([]);
     const [q, setQ] = useState("");
-    const [view, setView] = useState("list"); // "list" | "grid" (можемо додати пізніше)
+    const [view, setView] = useState("list");
     const [loading, setLoading] = useState(true);
-
-
-    function handleLogout() {
-        localStorage.removeItem("token");
-        navigate("/login", { replace: true });
-    }
 
     const navigate = useNavigate();
 
+    async function handleLogout() {
+        try {
+            await fetch(`${API}/api/auth/logout`, {
+                method: "POST",
+                credentials: "include",
+            });
+        } catch (error) {
+            console.error("LOGOUT ERROR:", error);
+        } finally {
+            navigate("/login", { replace: true });
+        }
+    }
+
     const stats = useMemo(() => {
         const total = products.length;
-        const hits = products.filter(p => p.badges?.includes("Хіт")).length;
-        const sales = products.filter(p => p.badges?.includes("Розпродаж")).length;
-        const news = products.filter(p => p.badges?.includes("Новинка")).length;
+        const hits = products.filter((p) => p.badges?.includes("Хіт")).length;
+        const sales = products.filter((p) => p.badges?.includes("Розпродаж")).length;
+        const news = products.filter((p) => p.badges?.includes("Новинка")).length;
+
         return { total, hits, sales, news };
     }, [products]);
 
@@ -91,84 +109,106 @@ export default function SellerDashboard() {
         let alive = true;
 
         async function load() {
-            setLoading(true);
+            try {
+                setLoading(true);
 
-            const pRes = await fetch(`${API}/api/seller/profile/me`, {
-                credentials: "include",
-            });
+                const pRes = await fetch(`${API}/api/seller/profile/me`, {
+                    credentials: "include",
+                });
 
-            if (!alive) return;
+                if (!alive) return;
 
-            if (pRes.status === 401) {
+                if (pRes.status === 401) {
+                    setProfile(null);
+                    setProducts([]);
+                    setLoading(false);
+                    return;
+                }
+
+                if (!pRes.ok) {
+                    setProfile(null);
+                    setProducts([]);
+                    setLoading(false);
+                    return;
+                }
+
+                const p = await pRes.json();
+                setProfile(p);
+
+                const prRes = await fetch(
+                    `${API}/api/seller/products?q=${encodeURIComponent(q)}`,
+                    {
+                        credentials: "include",
+                    }
+                );
+
+                if (!alive) return;
+
+                if (prRes.status === 401) {
+                    setProducts([]);
+                    setLoading(false);
+                    return;
+                }
+
+                const data = await prRes.json();
+                setProducts(data.items || data.products || []);
+            } catch (error) {
+                console.error("SELLER DASHBOARD ERROR:", error);
                 setProfile(null);
                 setProducts([]);
-                setLoading(false);
-                return;
+            } finally {
+                if (alive) {
+                    setLoading(false);
+                }
             }
-
-            if (!pRes.ok) {
-                setProfile(null);
-                setProducts([]);
-                setLoading(false);
-                return;
-            }
-
-            const p = await pRes.json();
-            setProfile(p);
-
-            const prRes = await fetch(
-                `${API}/api/seller/products?q=${encodeURIComponent(q)}`,
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            if (!alive) return;
-
-            const data = await prRes.json();
-            setProducts(data.items || []);
-            setLoading(false);
         }
 
         load();
 
-        return () => { alive = false; };
-    }, [q, token]);
+        return () => {
+            alive = false;
+        };
+    }, [q]);
 
     async function handleDeleteProduct(id) {
-        if (!confirm("Видалити товар?")) return;
+        const confirmed = window.confirm("Видалити товар?");
+        if (!confirmed) return;
 
-        const res = await fetch(`${API}/api/seller/products/${id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        try {
+            const res = await fetch(`${API}/api/seller/products/${id}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
 
-        if (res.ok) {
-            setProducts((prev) => prev.filter((x) => x.id !== id));
-        } else {
+            if (res.ok) {
+                setProducts((prev) => prev.filter((x) => x.id !== id));
+                return;
+            }
+
             const data = await res.json().catch(() => ({}));
             alert(data.message || "Не вдалося видалити");
+        } catch (error) {
+            console.error("DELETE PRODUCT ERROR:", error);
+            alert("Не вдалося видалити");
         }
     }
 
-    if (loading) return <div className="container">Завантаження…</div>;
-
-    if (!token) {
-        return (
-            <div className="container">
-                <h1>Кабінет продавця</h1>
-                <p>Потрібно увійти в акаунт.</p>
-                <button className="btn btn--primary" type="button" onClick={() => navigate("/login")}>
-                    Перейти до входу
-                </button>
-            </div>
-        );
+    if (loading) {
+        return <div className="container">Завантаження…</div>;
     }
 
     if (!profile) {
         return (
             <div className="container">
                 <h1>Кабінет продавця</h1>
-                <p>Профіль продавця не знайдено або доступ обмежено.</p>
-                <Link to="/seller/apply" className="btn btn--primary">Стати продавцем</Link>
+                <p>Потрібно увійти в акаунт продавця або доступ обмежено.</p>
+                <button
+                    className="btn btn--primary"
+                    type="button"
+                    onClick={() => navigate("/login")}
+                >
+                    Перейти до входу
+                </button>
             </div>
         );
     }
@@ -177,12 +217,12 @@ export default function SellerDashboard() {
         <section className="sellerApp">
             <div className="container">
                 <div className="sellerLayout">
-
-                    {/* LEFT PANEL */}
                     <aside className="sellerNav">
                         <div className="sellerNav__brand">
                             <div className="sellerNav__title">Кабінет продавця</div>
-                            <div className="sellerNav__sub">{profile.displayName || "Мій магазин"}</div>
+                            <div className="sellerNav__sub">
+                                {profile.displayName || "Мій магазин"}
+                            </div>
                             <div className="sellerNav__status">
                                 <StatusChip status={profile.status} />
                                 <span className="muted">
@@ -192,31 +232,42 @@ export default function SellerDashboard() {
                         </div>
 
                         <div className="sellerNav__menu">
-                            <NavLink to="/seller" end className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}>
-                                <i className="icon-grid" />
+                            <NavLink
+                                to="/seller"
+                                end
+                                className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
+                            >
                                 Товари
                             </NavLink>
 
-                            <NavLink to="/seller/products/new" className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}>
-                                <i className="icon-plus" />
+                            {/* <NavLink
+                                to="/seller/products/new"
+                                className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
+                            >
                                 Додати товар
-                            </NavLink>
+                            </NavLink> */}
 
-                            <NavLink to="/seller/profile" className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}>
-                                <i className="icon-user" />
+                            <NavLink
+                                to="/seller/profile"
+                                className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
+                            >
                                 Налаштування профілю
                             </NavLink>
 
-                            <NavLink to="/seller/delivery" className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}>
-                                <i className="icon-truck" />
+                            <NavLink
+                                to="/seller/delivery"
+                                className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
+                            >
                                 Доставка
                             </NavLink>
 
-                            <NavLink to="/seller/payment" className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}>
-                                <i className="icon-card" />
+                            <NavLink
+                                to="/seller/payment"
+                                className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
+                            >
                                 Оплата
                             </NavLink>
-                            {/* ✅ ВИЙТИ */}
+
                             <ProfileMenuItem
                                 label="Вийти"
                                 danger
@@ -244,16 +295,19 @@ export default function SellerDashboard() {
                         </div>
                     </aside>
 
-                    {/* MAIN */}
                     <main className="sellerMain">
                         <header className="mainHead">
                             <div>
                                 <h1 className="mainHead__h1">Мої товари</h1>
-                                <p className="mainHead__p">Тут ви керуєте товарами: додаєте, редагуєте, видаляєте.</p>
+                                <p className="mainHead__p">
+                                    Тут ви керуєте товарами: додаєте, редагуєте, видаляєте.
+                                </p>
                             </div>
 
                             <div className="mainHead__actions">
-                                <Link className="btn btn--primary" to="/seller/products/new">+ Додати товар</Link>
+                                <Link className="btn btn--primary" to="/seller/products/new">
+                                    + Додати товар
+                                </Link>
                                 <button
                                     type="button"
                                     className="btn btn--soft"
@@ -268,27 +322,11 @@ export default function SellerDashboard() {
                         <div className="panel">
                             <div className="panel__bar">
                                 <div className="search">
-                                    <i className="icon-search" />
                                     <input
                                         value={q}
                                         onChange={(e) => setQ(e.target.value)}
                                         placeholder="Пошук по товарах…"
                                     />
-                                </div>
-
-                                <div className="panel__right">
-                                    <select defaultValue="">
-                                        <option value="">Усі бейджі</option>
-                                        <option value="Новинка">Новинка</option>
-                                        <option value="Розпродаж">Розпродаж</option>
-                                        <option value="Хіт">Хіт</option>
-                                    </select>
-
-                                    <select defaultValue="new">
-                                        <option value="new">Спочатку нові</option>
-                                        <option value="cheap">Спочатку дешеві</option>
-                                        <option value="expensive">Спочатку дорогі</option>
-                                    </select>
                                 </div>
                             </div>
 
@@ -297,7 +335,9 @@ export default function SellerDashboard() {
                                     <div className="empty__icon">🧶</div>
                                     <h2 className="empty__title">У вас ще немає товарів</h2>
                                     <p className="empty__text">Додайте перший товар і почніть продажі.</p>
-                                    <Link className="btn btn--primary" to="/seller/products/new">+ Додати товар</Link>
+                                    <Link className="btn btn--primary" to="/seller/products/new">
+                                        + Додати товар
+                                    </Link>
                                 </div>
                             ) : (
                                 <div className="list">
@@ -308,7 +348,6 @@ export default function SellerDashboard() {
                             )}
                         </div>
                     </main>
-
                 </div>
             </div>
         </section>

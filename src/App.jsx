@@ -18,9 +18,10 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 import ProductDetails from './pages/ProductDetails/ProductDetails.jsx';
 import CatalogPage from './pages/Catalog/CatalogPage.jsx';
 import AdminLayout from './pages/Admin/AdminLayout/AdminLayout.jsx';
-import AdminRoute from './components/AdminRoute/AdminRoute.jsx';
 import AdminCategoriesPage from './pages/Admin/AdminCategoriesPage/AdminCategoriesPage.jsx';
 import AdminUsersPage from './pages/Admin/AdminUsersPage/AdminUsersPage.jsx';
+import CartPage from './pages/CartPage/CartPage.jsx';
+import FAQSection from './components/FAQSection/FAQSection.jsx';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               <Promo />
               <HitsNewSection />
               <Recommendation />
+              <FAQSection />
             </>
           }
         />
@@ -51,9 +53,9 @@ function App() {
         <Route
           path="/admin"
           element={
-            <AdminRoute>
+            <ProtectedRoute allowedRoles={["admin"]}>
               <AdminLayout />
-            </AdminRoute>
+            </ProtectedRoute>
           }
         >
           <Route path="categories" element={<AdminCategoriesPage />} />
@@ -61,6 +63,7 @@ function App() {
         </Route>
 
         <Route path="/catalog" element={<CatalogPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -69,9 +72,32 @@ function App() {
         <Route path="/verify-email" element={<VerifyEmail />} />
 
         {/* 🔴 КАБІНЕТ ПРОДАВЦЯ */}
-        <Route path="/seller" element={<SellerDashboard />} />
-        <Route path="/seller/products/new" element={<SellerProductForm mode="create" />} />
-        <Route path="/seller/products/:id/edit" element={<SellerProductForm mode="edit" />} />
+        <Route
+          path="/seller"
+          element={
+            <ProtectedRoute allowedRoles={["seller"]}>
+              <SellerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/seller/products/new"
+          element={
+            <ProtectedRoute allowedRoles={["seller"]}>
+              <SellerProductForm mode="create" />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/seller/products/:id/edit"
+          element={
+            <ProtectedRoute allowedRoles={["seller"]}>
+              <SellerProductForm mode="edit" />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/profile/edit"

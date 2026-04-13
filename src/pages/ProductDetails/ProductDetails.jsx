@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fileUrl } from "../../utils/fileUrl.js";
+import { productsService } from "../../services/products.service.js";
+import { recommendationsService } from "../../services/recommendations.service.js";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const priceFormatter = new Intl.NumberFormat("uk-UA");
 
 export default function ProductDetails() {
     const { id } = useParams();
+
+    useEffect(() => {
+        if (!id) return;
+
+        recommendationsService.trackView(id).catch(console.error);
+    }, [id]);
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -20,20 +27,28 @@ export default function ProductDetails() {
                 setLoading(true);
                 setError("");
 
-                const res = await fetch(`${API}/api/products/${id}`);
-                const data = await res.json();
+                const data = await productsService.getById(id);
+                const productData = data.product || data;
 
-                setProduct(data.product);
-                setActiveImg(data.product.coverImage || data.product.images?.[0]);
+                if (!productData) {
+                    throw new Error("Товар не знайдено");
+                }
+
+                setProduct(productData);
+                setActiveImg(productData.coverImage || productData.images?.[0] || null);
             } catch (err) {
                 console.error(err);
-                setError("Помилка завантаження товару");
+                setError(err.message || "Помилка завантаження товару");
+                setProduct(null);
+                setActiveImg(null);
             } finally {
                 setLoading(false);
             }
         }
 
-        if (id) fetchProduct();
+        if (id) {
+            fetchProduct();
+        }
     }, [id]);
 
     if (loading) return <div className="container">Завантаження...</div>;
@@ -45,8 +60,6 @@ export default function ProductDetails() {
     return (
         <div className="product">
             <div className="container product__container">
-
-                {/* LEFT */}
                 <div className="product__gallery">
                     <div className="product__main-img">
                         <img src={fileUrl(activeImg)} alt={product.title} />
@@ -56,6 +69,7 @@ export default function ProductDetails() {
                         {images.map((img, i) => (
                             <button
                                 key={i}
+                                type="button"
                                 className={`product__thumb ${activeImg === img ? "is-active" : ""}`}
                                 onClick={() => setActiveImg(img)}
                             >
@@ -65,7 +79,6 @@ export default function ProductDetails() {
                     </div>
                 </div>
 
-                {/* RIGHT */}
                 <div className="product__info">
                     <div className="product__badges">
                         {product.badges?.map((b) => (
@@ -87,12 +100,16 @@ export default function ProductDetails() {
 
                     <div className="product__controls">
                         <div className="qty">
-                            <button onClick={() => setQty((q) => Math.max(1, q - 1))}>–</button>
+                            <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))}>
+                                –
+                            </button>
                             <span>{qty}</span>
-                            <button onClick={() => setQty((q) => Math.min(99, q + 1))}>+</button>
+                            <button type="button" onClick={() => setQty((q) => Math.min(99, q + 1))}>
+                                +
+                            </button>
                         </div>
 
-                        <button className="product__buy">
+                        <button type="button" className="product__buy">
                             Додати в кошик
                         </button>
                     </div>

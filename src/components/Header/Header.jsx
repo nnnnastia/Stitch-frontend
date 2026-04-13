@@ -1,17 +1,34 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import LanguageDropdown from "../LanguageDropdown/LanguageDropdown";
 import ProfileButton from "../ProfileButton/ProfileButton";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "../../hooks/useCart";
+import { usersService } from "../../services/users.service";
 import logo from "../../logo/logo4.png";
 import {
     MAIN_NAV,
     CATALOG_LINKS,
     INFO_LINKS,
 } from "../../constants/navigation";
+import CartPage from "../../pages/CartPage/CartPage";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
-    const cartCount = 2;
+
+    const { data: user } = useQuery({
+        queryKey: ["me"],
+        queryFn: usersService.getMe,
+        retry: false,
+        refetchOnWindowFocus: false,
+    });
+
+    const isAuthenticated = !!user;
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const { cart } = useCart(isAuthenticated);
+
+    const totalItems = isAuthenticated ? (cart?.summary?.totalItems || 0) : 0;
 
     const openMenu = () => setMenuOpen(true);
     const closeMenu = () => setMenuOpen(false);
@@ -85,16 +102,28 @@ export default function Header() {
                             <i className="icon-heart-1" />
                         </NavLink>
 
-                        <NavLink to="/cart" className="uiIconBtn uiIconBtn--cart" aria-label="Cart">
-                            <i className="icon-basket" />
-                            {cartCount > 0 && <span className="uiBadge">{cartCount}</span>}
-                        </NavLink>
+                        <button type="button" className="uiIconBtn uiIconBtn--cart" onClick={() => setIsCartOpen(true)}>
+                            <ShoppingCart size={20} />
+                            {totalItems > 0 && (
+                                <span className="uiBadge">{totalItems}</span>
+                            )}
+                        </button>
+
+                        <CartPage
+                            isOpen={isCartOpen}
+                            onClose={() => setIsCartOpen(false)} />
+                        {/* <Link to="/cart" className="uiIconBtn uiIconBtn--cart" aria-label="Cart">
+                            <ShoppingCart size={20} />
+                            {totalItems > 0 && (
+                                <span className="uiBadge">{totalItems}</span>
+                            )}
+                        </Link> */}
 
                         <ProfileButton />
                     </div>
                 </div>
 
-                <nav className="header__nav" aria-label="Primary navigation">
+                <nav className="header__nav" ariaa-label="Primary navigation">
                     {MAIN_NAV.map((item) => (
                         <NavLink key={item.to} to={item.to} className="header__navLink">
                             {item.label}
