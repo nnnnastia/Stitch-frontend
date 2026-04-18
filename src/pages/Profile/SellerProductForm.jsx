@@ -308,11 +308,19 @@ export default function SellerProductForm({ mode = "create" }) {
 
                                     {coverFile ? (
                                         <div className="seller-product-form__preview">
-                                            Новий файл: {coverFile.name}
+                                            <img
+                                                src={URL.createObjectURL(coverFile)}
+                                                alt="preview"
+                                                style={{ maxWidth: "150px" }}
+                                            />
                                         </div>
                                     ) : isEdit && existingCover ? (
                                         <div className="seller-product-form__preview">
-                                            Поточна обкладинка вже збережена
+                                            <img
+                                                src={existingCover}
+                                                alt="cover"
+                                                style={{ maxWidth: "150px" }}
+                                            />
                                         </div>
                                     ) : (
                                         <p className="seller-product-form__hint">
@@ -336,7 +344,14 @@ export default function SellerProductForm({ mode = "create" }) {
 
                                     {imagesFiles.length > 0 ? (
                                         <div className="seller-product-form__preview">
-                                            Обрано файлів: {imagesFiles.length}
+                                            {imagesFiles.map((file, index) => (
+                                                <img
+                                                    key={index}
+                                                    src={URL.createObjectURL(file)}
+                                                    alt="preview"
+                                                    style={{ width: "80px", marginRight: "8px" }}
+                                                />
+                                            ))}
                                         </div>
                                     ) : (
                                         <p className="seller-product-form__hint">
