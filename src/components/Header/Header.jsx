@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { ShoppingCart, CameraIcon } from "lucide-react";
+
 import LanguageDropdown from "../LanguageDropdown/LanguageDropdown";
 import ProfileButton from "../ProfileButton/ProfileButton";
-import { ShoppingCart } from "lucide-react";
 import { useCart } from "../../hooks/useCart";
 import { usersService } from "../../services/users.service";
+import { searchByPhoto } from "../../services/search.service";
 import logo from "../../logo/logo4.png";
 import {
     MAIN_NAV,
@@ -13,10 +15,15 @@ import {
     INFO_LINKS,
 } from "../../constants/navigation";
 import CartPage from "../../pages/CartPage/CartPage";
+import HeaderSearch from "../HeaderSearch/HeaderSearch";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
-
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const fileInputRef = useRef(null);
+    const navigate = useNavigate();
+    const [photoResults, setPhotoResults] = useState(null);
+    const [loadingPhotoSearch, setLoadingPhotoSearch] = useState(false);
     const { data: user } = useQuery({
         queryKey: ["me"],
         queryFn: usersService.getMe,
@@ -25,13 +32,35 @@ export default function Header() {
     });
 
     const isAuthenticated = !!user;
-    const [isCartOpen, setIsCartOpen] = useState(false);
     const { cart } = useCart(isAuthenticated);
-
     const totalItems = isAuthenticated ? (cart?.summary?.totalItems || 0) : 0;
 
     const openMenu = () => setMenuOpen(true);
     const closeMenu = () => setMenuOpen(false);
+
+    const handleCameraClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            setLoadingPhotoSearch(true);
+
+            const result = await searchByPhoto(file);
+            console.log(result);
+
+            setPhotoResults(result); // 🔥 головне
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoadingPhotoSearch(false);
+            e.target.value = "";
+        }
+    };
 
     useEffect(() => {
         document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -71,24 +100,7 @@ export default function Header() {
                             <i className="icon-menu" />
                         </button>
 
-                        <div className="header__search">
-                            <button
-                                className="header__searchBtn uiIconBtn"
-                                type="button"
-                                aria-label="Search"
-                            >
-                                <i className="icon-search" />
-                            </button>
-
-                            <div className="header__searchField">
-                                <i className="icon-search header__searchIcon" />
-                                <input
-                                    className="header__searchInput"
-                                    placeholder="Пошук товарів…"
-                                    type="text"
-                                />
-                            </div>
-                        </div>
+                        <HeaderSearch />
                     </div>
 
                     <Link to="/" aria-label="Home">
@@ -102,7 +114,12 @@ export default function Header() {
                             <i className="icon-heart-1" />
                         </NavLink>
 
-                        <button type="button" className="uiIconBtn uiIconBtn--cart" onClick={() => setIsCartOpen(true)}>
+                        <button
+                            type="button"
+                            className="uiIconBtn uiIconBtn--cart"
+                            onClick={() => setIsCartOpen(true)}
+                            aria-label="Cart"
+                        >
                             <ShoppingCart size={20} />
                             {totalItems > 0 && (
                                 <span className="uiBadge">{totalItems}</span>
@@ -111,19 +128,14 @@ export default function Header() {
 
                         <CartPage
                             isOpen={isCartOpen}
-                            onClose={() => setIsCartOpen(false)} />
-                        {/* <Link to="/cart" className="uiIconBtn uiIconBtn--cart" aria-label="Cart">
-                            <ShoppingCart size={20} />
-                            {totalItems > 0 && (
-                                <span className="uiBadge">{totalItems}</span>
-                            )}
-                        </Link> */}
+                            onClose={() => setIsCartOpen(false)}
+                        />
 
                         <ProfileButton />
                     </div>
                 </div>
 
-                <nav className="header__nav" ariaa-label="Primary navigation">
+                <nav className="header__nav" aria-label="Primary navigation">
                     {MAIN_NAV.map((item) => (
                         <NavLink key={item.to} to={item.to} className="header__navLink">
                             {item.label}

@@ -7,11 +7,16 @@ export const recommendationsService = {
             credentials: "include",
         });
 
+        const data = await res.json().catch(() => ({}));
+
+        console.log("TRACK VIEW STATUS:", res.status);
+        console.log("TRACK VIEW RESPONSE:", data);
+
         if (!res.ok) {
-            throw new Error("Failed to track view");
+            throw new Error(data.message || "Failed to track view");
         }
 
-        return res.json();
+        return data;
     },
 
     async getMyRecommendations() {
@@ -20,10 +25,15 @@ export const recommendationsService = {
             credentials: "include",
         });
 
+        const data = await res.json().catch(() => ({}));
+
+        console.log("RECOMMENDATIONS STATUS:", res.status);
+        console.log("RECOMMENDATIONS DATA:", data);
+
         if (!res.ok) {
-            throw new Error("Failed to load recommendations");
+            throw new Error(data.message || "Failed to load recommendations");
         }
 
-        return res.json();
+        return data;
     }
 };
