@@ -255,10 +255,10 @@ export default function SellerDashboard() {
                             </NavLink>
 
                             <NavLink
-                                to="/seller/delivery"
+                                to="/seller/orders"
                                 className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
                             >
-                                Доставка
+                                Мої замовлення
                             </NavLink>
 
                             <NavLink

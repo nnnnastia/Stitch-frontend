@@ -1,0 +1,306 @@
+.checkout {
+    padding: 40px 0 64px;
+
+    &__title {
+        margin: 0 0 24px;
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: #111827;
+    }
+
+    &__empty {
+        margin: 0;
+        padding: 32px;
+        border: 1px solid #e5e7eb;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+        font-size: 16px;
+        color: #6b7280;
+    }
+
+    &__layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
+        gap: 24px;
+        align-items: start;
+
+
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+    }
+
+    &__block {
+        position: relative;
+        padding: 24px;
+        border: 1px solid #e5e7eb;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow:
+            0 12px 30px rgba(17, 24, 39, 0.05),
+            0 2px 8px rgba(17, 24, 39, 0.04);
+
+        h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        label {
+            display: block;
+            margin: 0 0 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            min-height: 20px;
+            margin-bottom: 16px;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 14px;
+            outline: none;
+            background: #fff;
+            font-size: 15px;
+            color: #111827;
+            box-sizing: border-box;
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease;
+
+            &::placeholder {
+                color: #9ca3af;
+
+            }
+
+            &:focus {
+                border-color: #111827;
+                box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08);
+            }
+
+            &:disabled {
+                cursor: not-allowed;
+                background: #f3f4f6;
+                color: #9ca3af;
+            }
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+    }
+
+    &__delivery-type {
+        margin: 0 0 16px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        font-size: 14px;
+        color: #374151;
+
+        strong {
+            color: #111827;
+        }
+    }
+
+    &__summary {
+        position: sticky;
+        top: 96px;
+        padding: 24px;
+        border: 1px solid #e5e7eb;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow:
+            0 12px 30px rgba(17, 24, 39, 0.05),
+            0 2px 8px rgba(17, 24, 39, 0.04);
+
+        h2 {
+            margin: 0 0 18px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        p {
+            margin: 0 0 10px;
+            font-size: 15px;
+            color: #374151;
+        }
+
+        strong {
+            color: #111827;
+        }
+    }
+
+    &__items {
+        margin-top: 20px;
+        padding-top: 18px;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 0;
+        border-bottom: 1px solid #f3f4f6;
+
+        &:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        span:first-child {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #111827;
+        }
+
+        span:last-child {
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+    }
+
+    button[type="submit"] {
+        min-height: 52px;
+        padding: 0 20px;
+        border: none;
+        border-radius: 16px;
+        background: #111827;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease,
+            box-shadow 0.2s ease;
+        box-shadow: 0 10px 20px rgba(17, 24, 39, 0.16);
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 24px rgba(17, 24, 39, 0.2);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        &:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    }
+}
+
+.checkout-dropdown {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: -8px 0 16px;
+    padding: 8px;
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 16px 32px rgba(17, 24, 39, 0.12);
+
+    button {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 42px;
+        padding: 10px 12px;
+        border: none;
+        border-radius: 12px;
+        background: transparent;
+        text-align: left;
+        font-size: 14px;
+        color: #111827;
+        cursor: pointer;
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+
+        &:hover {
+            background: #f3f4f6;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .checkout {
+        &__layout {
+            grid-template-columns: 1fr;
+        }
+
+        &__summary {
+            position: static;
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .checkout {
+        padding: 24px 0 48px;
+
+        &__title {
+            margin-bottom: 18px;
+            font-size: 26px;
+        }
+
+        &__block,
+        &__summary,
+        &__empty {
+            padding: 18px;
+            border-radius: 22px;
+        }
+
+        &__block {
+            h2 {
+                font-size: 18px;
+            }
+        }
+
+        button[type="submit"] {
+            width: 100%;
+        }
+    }
+
+    .checkout-dropdown {
+        max-height: 200px;
+    }
+}
+
+.checkout__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
+    gap: 24px;
+}

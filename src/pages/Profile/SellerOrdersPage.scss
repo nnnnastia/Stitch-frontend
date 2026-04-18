@@ -1,0 +1,220 @@
+.seller-orders {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    &__subtitle {
+        margin: 0;
+        font-size: 14px;
+        color: #64748b;
+    }
+
+    &__summary,
+    &__empty,
+    &__state,
+    &__card {
+        background: #fcfcfd;
+        border: 1px solid #e7eaf0;
+        border-radius: 18px;
+    }
+
+    &__summary,
+    &__empty,
+    &__state {
+        padding: 20px 24px;
+    }
+
+    &__state--error {
+        color: #b91c1c;
+        background: #fff7f7;
+        border-color: #fecaca;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px 28px;
+    }
+
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    &__number {
+        margin: 0 0 6px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    &__date {
+        margin: 0;
+        font-size: 14px;
+        color: #64748b;
+    }
+
+    &__status-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    &__status {
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    &__status--pending {
+        color: #b45309;
+        background: #fff7ed;
+    }
+
+    &__status--confirmed {
+        color: #1d4ed8;
+        background: #eff6ff;
+    }
+
+    &__status--paid {
+        color: #047857;
+        background: #ecfdf5;
+    }
+
+    &__status--shipped {
+        color: #7c3aed;
+        background: #f5f3ff;
+    }
+
+    &__status--completed {
+        color: #166534;
+        background: #f0fdf4;
+    }
+
+    &__status--cancelled {
+        color: #b91c1c;
+        background: #fef2f2;
+    }
+
+    &__select {
+        min-height: 40px;
+        padding: 0 12px;
+        border: 1px solid #d7deea;
+        border-radius: 10px;
+        background: #fff;
+    }
+
+    &__customer {
+        display: grid;
+        gap: 8px;
+        padding-top: 16px;
+        border-top: 1px solid #e7eaf0;
+
+        p {
+            margin: 0;
+            font-size: 14px;
+            color: #334155;
+        }
+    }
+
+    &__items {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    &__item {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        padding-top: 14px;
+        border-top: 1px solid #e7eaf0;
+    }
+
+    &__image-wrap {
+        flex-shrink: 0;
+        width: 76px;
+        height: 76px;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #f8fafc;
+        border: 1px solid #e7eaf0;
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    &__image-placeholder {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        color: #94a3b8;
+        text-align: center;
+        padding: 6px;
+    }
+
+    &__item-content {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+    }
+
+    &__item-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    &__item-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 14px;
+        color: #64748b;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 14px;
+        border-top: 1px solid #e7eaf0;
+    }
+
+    &__sum {
+        font-size: 16px;
+        color: #0f172a;
+    }
+}

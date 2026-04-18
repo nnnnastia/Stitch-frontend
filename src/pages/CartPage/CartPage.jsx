@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { useCart } from "../../hooks/useCart";
 import { fileUrl } from "../../utils/fileUrl";
 
 export default function CartPage({ isOpen, onClose }) {
+    const navigate = useNavigate();
+
     const {
         cart,
         isLoading,
@@ -38,6 +41,11 @@ export default function CartPage({ isOpen, onClose }) {
         await clearCart();
     };
 
+    const handleCheckout = () => {
+        onClose?.();
+        navigate("/checkout");
+    };
+
     return (
         <div className="cart-drawer-overlay" onClick={onClose}>
             <aside
@@ -61,7 +69,7 @@ export default function CartPage({ isOpen, onClose }) {
                     <p className="cart-drawer__state">{error.message}</p>
                 ) : !items.length ? (
                     <div className="cart-drawer__empty">
-                        <p>Your cart is empty.</p>
+                        <p>Кошик порожній.</p>
                     </div>
                 ) : (
                     <>
@@ -142,6 +150,7 @@ export default function CartPage({ isOpen, onClose }) {
                                 <button
                                     type="button"
                                     className="cart-drawer__button cart-drawer__button--primary"
+                                    onClick={handleCheckout}
                                 >
                                     Оформити замовлення
                                 </button>
