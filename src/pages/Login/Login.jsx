@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import googleIcon from "../assets/icon/google-icon.svg";
-import facebookIcon from "../assets/icon/facebook-icon.png";
-import appleIcon from "../assets/icon/apple-icon.svg";
+import googleIcon from "../../assets/icon/google-icon.svg";
+import facebookIcon from "../../assets/icon/facebook-icon.png";
+import appleIcon from "../../assets/icon/apple-icon.svg";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 

@@ -1,34 +1,54 @@
 export default function Pagination({
     page,
     totalPages,
-    hasNextPage,
-    hasPrevPage,
     onPageChange,
+    className = "",
 }) {
-    if (!totalPages || totalPages <= 1) return null;
+    if (totalPages <= 1) return null;
+
+    const handlePrev = () => {
+        if (page > 1) {
+            onPageChange(page - 1);
+        }
+    };
+
+    const handleNext = () => {
+        if (page < totalPages) {
+            onPageChange(page + 1);
+        }
+    };
 
     return (
-        <div className="pagination">
+        <div className={`pagination ${className}`}>
             <button
-                type="button"
                 className="pagination__btn"
-                onClick={() => onPageChange(page - 1)}
-                disabled={!hasPrevPage}
+                disabled={page === 1}
+                onClick={handlePrev}
             >
-                ← Назад
+                {"<"}
             </button>
 
-            <span className="pagination__info">
-                {page} / {totalPages}
-            </span>
+            {Array.from({ length: totalPages }, (_, index) => {
+                const pageNumber = index + 1;
+
+                return (
+                    <button
+                        key={pageNumber}
+                        className={`pagination__page ${page === pageNumber ? "is-active" : ""
+                            }`}
+                        onClick={() => onPageChange(pageNumber)}
+                    >
+                        {pageNumber}
+                    </button>
+                );
+            })}
 
             <button
-                type="button"
                 className="pagination__btn"
-                onClick={() => onPageChange(page + 1)}
-                disabled={!hasNextPage}
+                disabled={page === totalPages}
+                onClick={handleNext}
             >
-                Далі →
+                {">"}
             </button>
         </div>
     );

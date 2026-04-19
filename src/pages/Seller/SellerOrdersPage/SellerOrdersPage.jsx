@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { sellerOrdersService } from "../../services/sellerOrders.service.js";
-import { fileUrl } from "../../utils/fileUrl.js";
+import { sellerOrdersService } from "../../../services/sellerOrders.service.js";
+import { fileUrl } from "../../../utils/fileUrl.js";
 
 function formatPrice(value) {
     return new Intl.NumberFormat("uk-UA", {

@@ -3,13 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { AccountDetailsForm } from '../../components/AccountDetailsForm/AccountDetailsForm.jsx';
-import { AccountSidebar } from '../../components/AccountSidebar/AccountSidebar.jsx';
-import { PasswordForm } from '../../components/PasswordForm/PasswordForm.jsx';
-import { ROUTES } from '../../constants/index.js';
-import { profileSchema } from '../../schemas/profile.schema.js';
-import { usersService } from '../../services/users.service.js';
-import { useAuth } from '../../hooks/useAuth.js';
+import { AccountDetailsForm } from "../../../components/AccountDetailsForm/AccountDetailsForm.jsx";
+import { AccountSidebar } from '../../../components/AccountSidebar/AccountSidebar.jsx';
+import { PasswordForm } from '../../../components/PasswordForm/PasswordForm.jsx';
+import { ROUTES } from '../../../constants/index.js';
+import { profileSchema } from '../../../schemas/profile.schema.js';
+import { usersService } from '../../../services/users.service.js';
+import { useAuth } from '../../../hooks/useAuth.js';
 
 export function Profile() {
     const navigate = useNavigate();

@@ -3,16 +3,17 @@ import Header from './components/Header/Header.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import Promo from './pages/Promo/Promo.jsx';
 import { Routes, Route } from 'react-router-dom'
-import { Profile } from './pages/User/Profile.jsx';
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
+import { Profile } from './pages/User/Profile/Profile.jsx';
+import Login from "./pages/Login/Login.jsx";
+import Register from "./pages/Register/Register.jsx";
 import RequireAuth from "./components/RequireAuth/RequireAuth.jsx";
-import EditProfile from './pages/EditProfile.jsx';
-import SellerDashboard from './pages/Profile/SellerDashboard.jsx';
 import HitsNewSection from './components/HitsNewSection/HitsNewSection.jsx';
 import Recommendation from './components/Recommendation/Recommendation.jsx';
-import SellerProductForm from './pages/Profile/SellerProductForm.jsx';
-import VerifyEmail from './pages/Profile/VerifyEmail.jsx';
+import SellerLayout from './pages/Seller/SellerLayout/SellerLayout.jsx';
+import SellerOrdersPage from './pages/Seller/SellerOrdersPage/SellerOrdersPage.jsx';
+import SellerProductsPage from './pages/Seller/SellerProductsPage/SellerProductsPage.jsx';
+import SellerProductForm from './pages/Seller/SellerProductForm/SellerProductForm.jsx';
+import VerifyEmail from './pages/VerifyEmail/VerifyEmail.jsx';
 import CheckEmail from './components/CheckEmail/CheckEmail.jsx';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 import ProductDetails from './pages/ProductDetails/ProductDetails.jsx';
@@ -25,7 +26,6 @@ import FAQSection from './components/FAQSection/FAQSection.jsx';
 import CheckoutPage from './pages/CheckoutPage/CheckoutPage.jsx';
 import MyOrdersPage from "./pages/User/MyOrdersPage/MyOrdersPage.jsx";
 import AdminOrdersPage from './pages/Admin/AdminOrdersPage/AdminOrdersPage.jsx';
-import SellerOrdersPage from './pages/Profile/SellerOrdersPage.jsx';
 
 function App() {
   return (
@@ -91,10 +91,13 @@ function App() {
           path="/seller"
           element={
             <ProtectedRoute allowedRoles={["seller"]}>
-              <SellerDashboard />
+              <SellerLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<SellerProductsPage />} />
+          <Route path="orders" element={<SellerOrdersPage />} />
+        </Route>
 
         <Route
           path="/seller/products/new"
@@ -106,14 +109,6 @@ function App() {
         />
 
         <Route
-          path="/seller/orders"
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <SellerOrdersPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/seller/products/:id/edit"
           element={
             <ProtectedRoute allowedRoles={["seller"]}>
@@ -121,16 +116,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route
-          path="/profile/edit"
-          element={
-            <RequireAuth>
-              <EditProfile />
-            </RequireAuth>
-          }
-        />
-        <Route path="/seller" element={<SellerDashboard />} />
 
 
         <Route path="*" element={<h1>404 — сторінку не знайдено</h1>} />
