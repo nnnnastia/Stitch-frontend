@@ -6,20 +6,38 @@ import { recommendationsService } from "../../services/recommendations.service.j
 
 const priceFormatter = new Intl.NumberFormat("uk-UA");
 
+function getStoredUser() {
+    try {
+        return JSON.parse(localStorage.getItem("user") || "null");
+    } catch {
+        return null;
+    }
+}
+
 export default function ProductDetails() {
     const { id } = useParams();
-
-    useEffect(() => {
-        if (!id) return;
-
-        recommendationsService.trackView(id).catch(console.error);
-    }, [id]);
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [qty, setQty] = useState(1);
     const [activeImg, setActiveImg] = useState(null);
+
+    useEffect(() => {
+        if (!id) return;
+
+        const user = getStoredUser();
+        const canUsePersonalTracking =
+            user && (user.role === "user" || user.role === "seller");
+
+        const request = canUsePersonalTracking
+            ? recommendationsService.trackView(id)
+            : recommendationsService.trackPublicView(id);
+
+        request.catch((err) => {
+            console.error("Failed to track product view", err);
+        });
+    }, [id]);
 
     useEffect(() => {
         async function fetchProduct() {

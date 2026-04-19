@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import ProductCarousel from "../ProductCarousel/ProductCarousel";
 import { recommendationsService } from "../../services/recommendations.service";
 
+function getStoredUser() {
+    try {
+        return JSON.parse(localStorage.getItem("user") || "null");
+    } catch {
+        return null;
+    }
+}
+
 export default function RecommendedSection() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [title, setTitle] = useState("Рекомендовані товари");
 
     useEffect(() => {
         let isMounted = true;
@@ -15,11 +24,34 @@ export default function RecommendedSection() {
                 setLoading(true);
                 setError("");
 
-                const data = await recommendationsService.getMyRecommendations();
+                const user = getStoredUser();
+                const canUsePersonalRecommendations =
+                    user && (user.role === "user" || user.role === "seller");
 
-                if (!isMounted) return;
+                let data;
 
-                const normalized = Array.isArray(data.products)
+                if (canUsePersonalRecommendations) {
+                    try {
+                        data = await recommendationsService.getMyRecommendations();
+
+                        if (!isMounted) return;
+                        setTitle("Рекомендовано для вас");
+                    } catch (err) {
+                        console.error("Personal recommendations failed:", err);
+
+                        data = await recommendationsService.getPopularProducts(8);
+
+                        if (!isMounted) return;
+                        setTitle("Можливо, Вас зацікавить");
+                    }
+                } else {
+                    data = await recommendationsService.getPopularProducts(8);
+
+                    if (!isMounted) return;
+                    setTitle("Можливо, Вас зацікавить");
+                }
+
+                const normalized = Array.isArray(data?.products)
                     ? data.products.map(normalizeProduct)
                     : [];
 
@@ -27,12 +59,7 @@ export default function RecommendedSection() {
             } catch (err) {
                 if (!isMounted) return;
 
-                if (err?.message === "Failed to load recommendations") {
-                    setError("Не вдалося завантажити рекомендації");
-                } else {
-                    setError("Сталася помилка при завантаженні рекомендацій");
-                }
-
+                setError("Сталася помилка при завантаженні товарів");
                 setItems([]);
                 console.error(err);
             } finally {
@@ -51,13 +78,13 @@ export default function RecommendedSection() {
 
     return (
         <div className="recommendation">
-            <h2 className="recommendation__h2">Рекомендовані товари</h2>
+            <h2 className="recommendation__h2">{title}</h2>
             <span className="recommendation__line"></span>
             <ProductCarousel
                 items={items}
                 loading={loading}
                 error={error}
-                emptyText="Поки що немає персональних рекомендацій"
+                emptyText="Поки що немає товарів для відображення"
             />
         </div>
     );
