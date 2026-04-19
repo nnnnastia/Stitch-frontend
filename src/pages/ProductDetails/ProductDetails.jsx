@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { fileUrl } from "../../utils/fileUrl.js";
 import { productsService } from "../../services/products.service.js";
 import { recommendationsService } from "../../services/recommendations.service.js";
-
+import { Link } from "react-router-dom";
+import { Store, Star } from "lucide-react";
 const priceFormatter = new Intl.NumberFormat("uk-UA");
 
 function getStoredUser() {
@@ -75,6 +76,8 @@ export default function ProductDetails() {
 
     const images = [product.coverImage, ...(product.images || [])].filter(Boolean);
 
+    console.log("product seller:", product?.seller);
+    console.log("product seller storeSlug:", product?.seller?.storeSlug);
     return (
         <div className="product">
             <div className="container product__container">
@@ -108,10 +111,50 @@ export default function ProductDetails() {
 
                     <h1 className="product__title">{product.title}</h1>
 
-                    <div className="product__seller">
-                        Продавець: {product.seller?.userName || "Невідомо"}
-                    </div>
+                    {product?.seller && (
+                        <div className="product-details__seller">
+                            <div className="product-details__sellerHeader">
+                                <Store size={18} />
+                                <span className="product-details__sellerLabel">Продавець</span>
+                            </div>
 
+                            <div className="product-details__sellerContent">
+                                <div className="product-details__sellerInfo">
+                                    {product.seller.storeSlug ? (
+                                        <Link
+                                            to={`/shops/${product.seller.storeSlug}`}
+                                            className="product-details__sellerNameLink"
+                                        >
+                                            {product.seller.displayName || product.seller.userName || "Магазин"}
+                                        </Link>
+                                    ) : (
+                                        <div className="product-details__sellerName">
+                                            {product.seller.displayName || product.seller.userName || "Магазин"}
+                                        </div>
+                                    )}
+
+                                    {product.seller.rating && (
+                                        <div className="product-details__sellerRating">
+                                            <Star size={14} />
+                                            <span>{Number(product.seller.rating.avg || 0).toFixed(1)}</span>
+                                            <span className="product-details__sellerRatingCount">
+                                                ({product.seller.rating.count || 0})
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {product.seller.storeSlug && (
+                                    <Link
+                                        to={`/shops/${product.seller.storeSlug}`}
+                                        className="product-details__sellerBtn"
+                                    >
+                                        Перейти до магазину
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     <div className="product__price">
                         {formatPrice(product.price)} грн
                     </div>

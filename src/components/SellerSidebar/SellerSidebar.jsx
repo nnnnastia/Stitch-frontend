@@ -17,6 +17,8 @@ function StatusChip({ status }) {
 
 export default function SellerSidebar({ profile, stats }) {
     const navigate = useNavigate();
+    console.log("sidebar profile:", profile);
+    console.log("sidebar storeSlug:", profile?.profile?.storeSlug);
 
     async function handleLogout() {
         try {
@@ -57,10 +59,17 @@ export default function SellerSidebar({ profile, stats }) {
                 </NavLink>
 
                 <NavLink
-                    to="/seller/profile"
+                    to="/seller/store"
                     className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
                 >
-                    Налаштування профілю
+                    Налаштування магазину
+                </NavLink>
+
+                <NavLink
+                    to={`/shops/${profile?.profile?.storeSlug}`}
+                    className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
+                >
+                    Мій магазин
                 </NavLink>
 
                 <NavLink

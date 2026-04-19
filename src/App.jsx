@@ -27,6 +27,9 @@ import CheckoutPage from './pages/CheckoutPage/CheckoutPage.jsx';
 import MyOrdersPage from "./pages/User/MyOrdersPage/MyOrdersPage.jsx";
 import AdminOrdersPage from './pages/Admin/AdminOrdersPage/AdminOrdersPage.jsx';
 import ChatWidget from './components/ChatWidget/ChatWidget.jsx';
+import SellerPublicPage from './pages/Seller/SellerPublicPage/SellerPublicPage.jsx';
+import SellerProfilePage from './pages/Seller/SellerProfilePage/SellerProfilePage.jsx';
+
 function App() {
   return (
     <>
@@ -97,8 +100,12 @@ function App() {
           }
         >
           <Route index element={<SellerProductsPage />} />
+          <Route path="store" element={<SellerProfilePage />} />
           <Route path="orders" element={<SellerOrdersPage />} />
+          {/* <Route path="payment" element={<SellerPaymentPage />} /> */}
         </Route>
+
+        <Route path="/shops/:slug" element={<SellerPublicPage />} />
 
         <Route
           path="/seller/products/new"
