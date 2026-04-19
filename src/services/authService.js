@@ -1,21 +1,39 @@
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/";
+import { http } from "../api/http";
+import { clearAuthStorage } from "../utils/auth-storage";
+import { setIsLoggingOut } from "../utils/auth-session";
 
 export const authService = {
-    logout: async () => {
+    async logout() {
         try {
-            const response = await fetch(`${API}api/auth/logout`, {
-                method: 'POST',
-                credentials: 'include',
+            setIsLoggingOut(true);
+            await http("/api/auth/logout", {
+                method: "POST",
             });
-
-            if (!response.ok) {
-                console.error('Failed to logout on server');
-            }
-
-            return response.ok;
+            clearAuthStorage();
+            return true;
         } catch (error) {
-            console.error('Logout error:', error);
+            console.error("Logout error:", error);
             return false;
+        } finally {
+            setIsLoggingOut(false);
         }
+    },
+
+    async forgotPassword(email) {
+        return http("/api/auth/forgot-password", {
+            method: "POST",
+            body: JSON.stringify({ email }),
+        });
+    },
+
+    async resetPassword({ token, newPassword, confirmPassword }) {
+        return http("/api/auth/reset-password", {
+            method: "POST",
+            body: JSON.stringify({
+                token,
+                newPassword,
+                confirmPassword,
+            }),
+        });
     },
 };

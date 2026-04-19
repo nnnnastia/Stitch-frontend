@@ -113,7 +113,7 @@ export default function Login() {
                             </button>
                         </div>
 
-                        <Link className="login__forgot" to="#">
+                        <Link className="login__forgot" to="/forgot-password">
                             Забули пароль?
                         </Link>
 

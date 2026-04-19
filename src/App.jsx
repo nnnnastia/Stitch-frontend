@@ -29,6 +29,9 @@ import AdminOrdersPage from './pages/Admin/AdminOrdersPage/AdminOrdersPage.jsx';
 import ChatWidget from './components/ChatWidget/ChatWidget.jsx';
 import SellerPublicPage from './pages/Seller/SellerPublicPage/SellerPublicPage.jsx';
 import SellerProfilePage from './pages/Seller/SellerProfilePage/SellerProfilePage.jsx';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
+import ResetPassword from './pages/ResetPassword/ResetPassword.jsx';
+
 
 function App() {
   return (
@@ -86,7 +89,8 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/check-email" element={<CheckEmail />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
 
