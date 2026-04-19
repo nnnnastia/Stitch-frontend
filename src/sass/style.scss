@@ -38,3 +38,9 @@
 @use "../pages/User/MyOrdersPage/MyOrdersPage.scss";
 @use "../pages/Admin/AdminOrdersPage/AdminOrdersPage.scss";
 @use "../pages/Seller/SellerOrdersPage/SellerOrdersPage.scss";
+@use "../components/ChatButton/ChatButton.scss";
+@use "../components/ChatWidget/ChatWidget.scss";
+@use "../components/ChatWindow/ChatWindow.scss";
+@use "../components/ConversationsList/ConversationsList.scss";
+@use "../components/MessageInput/MessageInput.scss";
+@use "../components/MessageList/MessageList.scss";

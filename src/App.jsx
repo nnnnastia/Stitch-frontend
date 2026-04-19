@@ -26,12 +26,13 @@ import FAQSection from './components/FAQSection/FAQSection.jsx';
 import CheckoutPage from './pages/CheckoutPage/CheckoutPage.jsx';
 import MyOrdersPage from "./pages/User/MyOrdersPage/MyOrdersPage.jsx";
 import AdminOrdersPage from './pages/Admin/AdminOrdersPage/AdminOrdersPage.jsx';
-
+import ChatWidget from './components/ChatWidget/ChatWidget.jsx';
 function App() {
   return (
     <>
-      <Header />
 
+      <Header />
+      <ChatWidget />
 
       <Routes>
         <Route

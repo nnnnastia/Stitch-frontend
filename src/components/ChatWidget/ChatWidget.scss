@@ -1,0 +1,42 @@
+/* контейнер всього віджета */
+.chat-widget {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1200;
+}
+
+/* контейнер для вікна */
+.chat-widget__window {
+    position: absolute;
+    right: 30px;
+    bottom: 60px;
+    width: 340px;
+    height: 480px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    transition: all 0.25s ease;
+}
+
+/* коли відкритий */
+.chat-widget__window.open {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* адаптив */
+@media (max-width: 768px) {
+    .chat-widget {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .chat-widget__window {
+        width: calc(100vw - 32px);
+        height: 70vh;
+        right: 0;
+        bottom: 72px;
+    }
+}
