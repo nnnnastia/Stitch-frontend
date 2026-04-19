@@ -4,6 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import googleIcon from "../../assets/icon/google-icon.svg";
 import facebookIcon from "../../assets/icon/facebook-icon.png";
 import appleIcon from "../../assets/icon/apple-icon.svg";
+import { http } from "../../api/http";
+import { markAuthSession } from "../../utils/auth-session";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -20,18 +22,12 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const res = await fetch(`${API}/api/auth/login`, {
+            const data = await http("/api/auth/login", {
                 method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
 
-            const data = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
-                throw new Error(data.message || "Помилка входу");
-            }
+            markAuthSession();
 
             localStorage.setItem("role", data.user.role);
             localStorage.setItem("user", JSON.stringify(data.user));
@@ -41,9 +37,6 @@ export default function Login() {
 
             await queryClient.invalidateQueries({ queryKey: ["me"] });
             await queryClient.invalidateQueries({ queryKey: ["cart"] });
-
-            await queryClient.refetchQueries({ queryKey: ["me"] });
-            await queryClient.refetchQueries({ queryKey: ["cart"] });
 
             if (location.state?.from) {
                 navigate(location.state.from, { replace: true });
@@ -108,7 +101,8 @@ export default function Login() {
                                 onClick={() => setShowPassword((prev) => !prev)}
                             >
                                 <span
-                                    className={`login__eye-icon ${showPassword ? "icon-eye" : "icon-eye-off"}`}
+                                    className={`login__eye-icon ${showPassword ? "icon-eye" : "icon-eye-off"
+                                        }`}
                                 />
                             </button>
                         </div>
@@ -125,7 +119,13 @@ export default function Login() {
                     </div>
 
                     <div className="login__oauth">
-                        <button type="button" className="login__oauth-btn">
+                        <button
+                            type="button"
+                            className="login__oauth-btn"
+                            onClick={() => {
+                                window.location.href = `${API}/api/auth/google/login`;
+                            }}
+                        >
                             <img src={googleIcon} alt="google" className="login__oauth-icon" />
                             Продовжити з Google
                         </button>

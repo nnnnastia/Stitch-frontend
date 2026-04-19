@@ -237,7 +237,10 @@ export default function Register() {
                     <div className="register__divider"><span>або</span></div>
 
                     <div className="register__oauth">
-                        <button type="button" className="register__oauth-btn">
+                        <button type="button" className="register__oauth-btn"
+                            onClick={() => {
+                                window.location.href = "http://localhost:5000/api/auth/google/register";
+                            }}>
                             <img src={googleIcon} alt="google" className="register__oauth-icon" />
                             Продовжити з Google
                         </button>

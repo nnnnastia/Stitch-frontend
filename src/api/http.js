@@ -1,5 +1,9 @@
 import { clearAuthStorage } from "../utils/auth-storage";
-import { getIsLoggingOut } from "../utils/auth-session";
+import {
+    getIsLoggingOut,
+    hasSession,
+    clearAuthSession,
+} from "../utils/auth-session";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -47,6 +51,7 @@ export async function http(path, options = {}, retry = true) {
         retry &&
         !isRefreshRequest &&
         !isLogoutRequest &&
+        hasSession() &&
         !getIsLoggingOut()
     ) {
         try {
@@ -54,6 +59,7 @@ export async function http(path, options = {}, retry = true) {
             return http(path, options, false);
         } catch {
             clearAuthStorage();
+            clearAuthSession();
 
             const error = new Error("Unauthorized");
             error.status = 401;

@@ -1,6 +1,6 @@
 import { http } from "../api/http";
 import { clearAuthStorage } from "../utils/auth-storage";
-import { setIsLoggingOut } from "../utils/auth-session";
+import { setIsLoggingOut, clearAuthSession } from "../utils/auth-session";
 
 export const authService = {
     async logout() {
@@ -10,9 +10,11 @@ export const authService = {
                 method: "POST",
             });
             clearAuthStorage();
+            clearAuthSession();
             return true;
         } catch (error) {
             console.error("Logout error:", error);
+            clearAuthSession();
             return false;
         } finally {
             setIsLoggingOut(false);
