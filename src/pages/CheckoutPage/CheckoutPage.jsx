@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { shippingService } from "../../services/shipping.service";
 import { ordersService } from "../../services/orders.service";
+import { paymentsService } from "../../services/payments.service";
 import { useCart } from "../../hooks/useCart";
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
-
     const { cart } = useCart();
 
     const [cityQuery, setCityQuery] = useState("");
@@ -108,8 +108,25 @@ export default function CheckoutPage() {
                 },
             });
 
+            const orderId = data?.order?._id || data?.order?.id;
+
+            if (!orderId) {
+                throw new Error("Не вдалося отримати ID замовлення");
+            }
+
+            if (paymentMethod === "card") {
+                const payment = await paymentsService.createCheckoutSession(orderId);
+
+                if (!payment?.url) {
+                    throw new Error("Не вдалося створити платіжну сесію");
+                }
+
+                window.location.href = payment.url;
+                return;
+            }
+
             alert("Замовлення успішно оформлено");
-            navigate(`/orders/${data.order._id}`);
+            navigate(`/orders/${orderId}`);
         } catch (error) {
             console.error(error);
             alert(error.message || "Помилка оформлення замовлення");
@@ -135,8 +152,9 @@ export default function CheckoutPage() {
                                     Служба доставки: <strong>Нова пошта</strong>
                                 </p>
 
-                                <label>Місто</label>
+                                <label htmlFor="city">Місто</label>
                                 <input
+                                    id="city"
                                     type="text"
                                     value={cityQuery}
                                     onChange={(e) => {
@@ -166,13 +184,13 @@ export default function CheckoutPage() {
                                     </div>
                                 )}
 
-                                <label>Відділення</label>
+                                <label htmlFor="warehouse">Відділення</label>
                                 <select
+                                    id="warehouse"
                                     value={selectedWarehouse?.id || ""}
                                     onChange={(e) => {
                                         const warehouse =
-                                            warehouses.find((w) => w.id === e.target.value) ||
-                                            null;
+                                            warehouses.find((w) => w.id === e.target.value) || null;
                                         setSelectedWarehouse(warehouse);
                                     }}
                                     disabled={!selectedCity || loadingWarehouses}
@@ -189,15 +207,17 @@ export default function CheckoutPage() {
                             <div className="checkout__block">
                                 <h2>Отримувач</h2>
 
-                                <label>ПІБ отримувача</label>
+                                <label htmlFor="recipientFullName">ПІБ отримувача</label>
                                 <input
+                                    id="recipientFullName"
                                     value={recipientFullName}
                                     onChange={(e) => setRecipientFullName(e.target.value)}
                                     required
                                 />
 
-                                <label>Телефон</label>
+                                <label htmlFor="recipientPhone">Телефон</label>
                                 <input
+                                    id="recipientPhone"
                                     value={recipientPhone}
                                     onChange={(e) => setRecipientPhone(e.target.value)}
                                     required
@@ -207,8 +227,9 @@ export default function CheckoutPage() {
                             <div className="checkout__block">
                                 <h2>Оплата</h2>
 
-                                <label>Спосіб оплати</label>
+                                <label htmlFor="paymentMethod">Спосіб оплати</label>
                                 <select
+                                    id="paymentMethod"
                                     value={paymentMethod}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                 >
@@ -218,7 +239,11 @@ export default function CheckoutPage() {
                             </div>
 
                             <button type="submit" disabled={submitting}>
-                                {submitting ? "Оформлення..." : "Підтвердити замовлення"}
+                                {submitting
+                                    ? paymentMethod === "card"
+                                        ? "Переходимо до оплати..."
+                                        : "Оформлення..."
+                                    : "Підтвердити замовлення"}
                             </button>
                         </form>
 
@@ -227,14 +252,17 @@ export default function CheckoutPage() {
 
                             <p>Всього товарів: {summary.totalItems}</p>
                             <p>Унікальні товари: {summary.uniqueItems}</p>
-                            <p><strong>Сума: {summary.totalPrice} UAH</strong></p>
+                            <p>
+                                <strong>Сума: {summary.totalPrice} UAH</strong>
+                            </p>
 
                             <div className="checkout__items">
                                 {items.map((item) => (
                                     <div key={item.id} className="checkout__item">
                                         <span>{item.product.title}</span>
                                         <span>
-                                            {item.quantity} × {item.product.price} {item.product.currency}
+                                            {item.quantity} × {item.product.price}{" "}
+                                            {item.product.currency}
                                         </span>
                                     </div>
                                 ))}

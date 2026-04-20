@@ -32,6 +32,8 @@ import SellerProfilePage from './pages/Seller/SellerProfilePage/SellerProfilePag
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword/ResetPassword.jsx';
 import CompleteGoogleSignupPage from './pages/CompleteGoogleSignupPage/CompleteGoogleSignupPage.jsx';
+import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage.jsx';
+import PaymentCancelPage from './pages/PaymentCancelPage/PaymentCancelPage.jsx';
 
 function App() {
   return (
@@ -94,6 +96,8 @@ function App() {
         <Route path="/check-email" element={<CheckEmail />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/complete-google-signup" element={<CompleteGoogleSignupPage />} />
+        <Route path="/payment/success" element={<PaymentSuccessPage />} />
+        <Route path="/payment/cancel" element={<PaymentCancelPage />} />
 
         {/* 🔴 КАБІНЕТ ПРОДАВЦЯ */}
         <Route
