@@ -3,8 +3,11 @@ import { useParams } from "react-router-dom";
 import { fileUrl } from "../../utils/fileUrl.js";
 import { productsService } from "../../services/products.service.js";
 import { recommendationsService } from "../../services/recommendations.service.js";
+import { reviewsService } from "../../services/reviews.service.js";
+import ReviewForm from "../../components/ReviewForm/ReviewForm.jsx";
 import { Link } from "react-router-dom";
 import { Store, Star } from "lucide-react";
+
 const priceFormatter = new Intl.NumberFormat("uk-UA");
 
 function getStoredUser() {
@@ -17,12 +20,17 @@ function getStoredUser() {
 
 export default function ProductDetails() {
     const { id } = useParams();
+    const currentUser = getStoredUser();
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [qty, setQty] = useState(1);
     const [activeImg, setActiveImg] = useState(null);
+
+    const [reviews, setReviews] = useState([]);
+    const [reviewsLoading, setReviewsLoading] = useState(true);
+    const [reviewsError, setReviewsError] = useState("");
 
     useEffect(() => {
         if (!id) return;
@@ -70,14 +78,59 @@ export default function ProductDetails() {
         }
     }, [id]);
 
+    async function handleDeleteReview(reviewId) {
+        const confirmed = window.confirm("Видалити відгук?");
+
+        if (!confirmed) return;
+
+        try {
+            await reviewsService.deleteReview(reviewId);
+            await loadReviews();
+            await refreshProduct();
+        } catch (err) {
+            console.error(err);
+            alert(err.message || "Не вдалося видалити відгук");
+        }
+    }
+
+    async function loadReviews() {
+        try {
+            setReviewsLoading(true);
+            setReviewsError("");
+
+            const data = await reviewsService.getProductReviews(id);
+            setReviews(Array.isArray(data?.items) ? data.items : []);
+        } catch (err) {
+            console.error(err);
+            setReviewsError(err.message || "Не вдалося завантажити відгуки");
+            setReviews([]);
+        } finally {
+            setReviewsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (id) {
+            loadReviews();
+        }
+    }, [id]);
+
+    async function refreshProduct() {
+        try {
+            const data = await productsService.getById(id);
+            const productData = data.product || data;
+            setProduct(productData);
+        } catch (err) {
+            console.error("Failed to refresh product", err);
+        }
+    }
+
     if (loading) return <div className="container">Завантаження...</div>;
     if (error) return <div className="container">{error}</div>;
     if (!product) return <div className="container">Товар не знайдено</div>;
 
     const images = [product.coverImage, ...(product.images || [])].filter(Boolean);
 
-    console.log("product seller:", product?.seller);
-    console.log("product seller storeSlug:", product?.seller?.storeSlug);
     return (
         <div className="product">
             <div className="container product__container">
@@ -155,6 +208,7 @@ export default function ProductDetails() {
                             </div>
                         </div>
                     )}
+
                     <div className="product__price">
                         {formatPrice(product.price)} грн
                     </div>
@@ -183,6 +237,80 @@ export default function ProductDetails() {
                     <div className="product__description">
                         <h3>Опис</h3>
                         <p>{product.description || "Опис відсутній"}</p>
+                    </div>
+
+                    <div className="product__reviews">
+                        <div className="product__reviews-header">
+                            <h3>Відгуки</h3>
+
+                            <div className="product__reviews-summary">
+                                <Star size={16} />
+                                <span>{Number(product.ratingAverage || 0).toFixed(1)}</span>
+                                <span>({product.ratingCount || 0})</span>
+                            </div>
+                        </div>
+
+                        <div className="product__review-form">
+                            <ReviewForm
+                                productId={product.id || product._id}
+                                onSuccess={async () => {
+                                    await loadReviews();
+                                    await refreshProduct();
+                                }}
+                            />
+                        </div>
+
+                        {reviewsLoading && <p>Завантаження відгуків...</p>}
+                        {reviewsError && <p>{reviewsError}</p>}
+
+                        {!reviewsLoading && !reviews.length && (
+                            <p className="product__reviews-empty">Ще немає відгуків</p>
+                        )}
+
+                        {!!reviews.length && (
+                            <div className="product__reviews-list">
+                                {reviews.map((review) => {
+                                    const isOwnReview = currentUser?.id === review.author?.id;
+
+                                    return (
+                                        <div key={review.id} className="product__review-card">
+                                            <div className="product__review-top">
+                                                <div className="product__review-author">
+                                                    {review.author?.userName || "Користувач"}
+                                                </div>
+
+                                                <div className="product__review-right">
+                                                    <div className="product__review-rating">
+                                                        <Star size={14} />
+                                                        <span>{Number(review.rating || 0).toFixed(1)}</span>
+                                                    </div>
+
+                                                    {isOwnReview && (
+                                                        <button
+                                                            type="button"
+                                                            className="product__review-delete"
+                                                            onClick={() => handleDeleteReview(review.id)}
+                                                            aria-label="Видалити відгук"
+                                                            title="Видалити відгук"
+                                                        >
+                                                            🗑
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <p className="product__review-text">
+                                                {review.text || ""}
+                                            </p>
+
+                                            <div className="product__review-date">
+                                                {new Date(review.createdAt).toLocaleDateString("uk-UA")}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

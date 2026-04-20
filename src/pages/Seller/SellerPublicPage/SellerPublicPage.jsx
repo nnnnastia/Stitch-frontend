@@ -250,9 +250,11 @@ export default function SellerPublicPage() {
 
                                 <div className="seller-page__rating">
                                     <Star size={16} />
-                                    <span>{Number(profile.rating?.avg || 0).toFixed(1)}</span>
+                                    <span>
+                                        {(profile.rating?.avg ?? 0).toFixed(1)}
+                                    </span>
                                     <span className="seller-page__ratingCount">
-                                        ({profile.rating?.count || 0})
+                                        ({profile.rating?.count ?? 0})
                                     </span>
                                 </div>
                             </div>

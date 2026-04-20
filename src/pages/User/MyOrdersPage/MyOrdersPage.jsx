@@ -31,20 +31,20 @@ function formatDate(dateString) {
 
 function getStatusLabel(status) {
     switch (status) {
-        case 'pending':
-            return 'Очікує підтвердження';
-        case 'paid':
-            return 'Оплачено';
-        case 'processing':
-            return 'В обробці';
-        case 'shipped':
-            return 'Відправлено';
-        case 'delivered':
-            return 'Доставлено';
-        case 'cancelled':
-            return 'Скасовано';
+        case "pending":
+            return "Очікує";
+        case "confirmed":
+            return "Підтверджено";
+        case "paid":
+            return "Оплачено";
+        case "shipped":
+            return "Відправлено";
+        case "completed":
+            return "Завершено";
+        case "cancelled":
+            return "Скасовано";
         default:
-            return 'Невідомий статус';
+            return status;
     }
 }
 
@@ -52,16 +52,22 @@ function getStatusClass(status) {
     switch (status) {
         case 'pending':
             return 'my-orders__status my-orders__status--pending';
+
+        case 'confirmed':
+            return 'my-orders__status my-orders__status--confirmed';
+
         case 'paid':
             return 'my-orders__status my-orders__status--paid';
-        case 'processing':
-            return 'my-orders__status my-orders__status--processing';
+
         case 'shipped':
             return 'my-orders__status my-orders__status--shipped';
-        case 'delivered':
-            return 'my-orders__status my-orders__status--delivered';
+
+        case 'completed':
+            return 'my-orders__status my-orders__status--completed';
+
         case 'cancelled':
             return 'my-orders__status my-orders__status--cancelled';
+
         default:
             return 'my-orders__status';
     }
@@ -181,6 +187,27 @@ export default function MyOrdersPage() {
     const handleLogout = async () => {
         await logout();
     };
+
+    const isReviewAvailable = (order) => {
+        return order.status === 'completed';
+    };
+
+    const handleCreateReview = (order, item) => {
+        if (!item.product?._id) return;
+
+        navigate(
+            `/account/reviews/new?orderId=${order._id}&productId=${item.product._id}`,
+        );
+    };
+
+    const handleEditReview = (order, item) => {
+        if (!item.review?._id) return;
+
+        navigate(
+            `/account/reviews/${item.review._id}/edit?orderId=${order._id}&productId=${item.product?._id || ''}`,
+        );
+    };
+
 
     const hasOrders = useMemo(() => orders.length > 0, [orders]);
 

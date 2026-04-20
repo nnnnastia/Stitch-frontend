@@ -94,6 +94,7 @@ function App() {
         <Route path="/check-email" element={<CheckEmail />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/complete-google-signup" element={<CompleteGoogleSignupPage />} />
+
         {/* 🔴 КАБІНЕТ ПРОДАВЦЯ */}
         <Route
           path="/seller"

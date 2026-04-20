@@ -247,3 +247,126 @@
         }
     }
 }
+
+.product__reviews {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        h3 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+    }
+
+    &-summary {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        color: #374151;
+
+        svg {
+            color: #f59e0b;
+        }
+
+        span:first-of-type {
+            font-weight: 600;
+        }
+
+        span:last-of-type {
+            color: #6b7280;
+        }
+    }
+
+    &-empty {
+        color: #6b7280;
+        font-size: 14px;
+    }
+}
+
+.product__reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.product__review-card {
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+}
+
+.product__review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.product__review-author {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.product__review-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: #374151;
+
+    svg {
+        color: #f59e0b;
+    }
+}
+
+.product__review-text {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.product__review-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.product__review-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product__review-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+        background: #f9fafb;
+        transform: scale(1.05);
+    }
+}
