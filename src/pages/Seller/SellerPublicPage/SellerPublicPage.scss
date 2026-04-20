@@ -425,3 +425,48 @@
         }
     }
 }
+
+.seller-page__contactBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 12px;
+
+    padding: 10px 16px;
+
+    background: #1e293b;
+    /* основний колір */
+    color: #fff;
+
+    border: none;
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* hover */
+.seller-page__contactBtn:hover {
+    background: rgb(25, 42, 75);
+    transform: translateY(-1px);
+}
+
+/* active */
+.seller-page__contactBtn:active {
+    transform: scale(0.98);
+}
+
+/* іконка */
+.seller-page__contactBtn svg {
+    flex-shrink: 0;
+}
+
+/* disabled (на майбутнє) */
+.seller-page__contactBtn:disabled {
+    background: #c7d2fe;
+    cursor: not-allowed;
+}

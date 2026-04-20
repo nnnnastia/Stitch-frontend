@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
 import { chatService } from "../../services/chat.service";
 
-export default function MessageList({ conversation, currentUserId }) {
+export default function MessageList({ conversation, currentUserId, refreshKey = 0 }) {
     const [messages, setMessages] = useState([]);
+    const [previewImage, setPreviewImage] = useState(null);
 
     useEffect(() => {
+        if (!conversation?.id) return;
+
         load();
         markAsRead();
-    }, [conversation.id]);
+    }, [conversation?.id, refreshKey]);
 
     async function load() {
+        if (!conversation?.id) return;
+
         const res = await chatService.getMessages(conversation.id);
         setMessages(res.items || []);
     }
 
     async function markAsRead() {
+        if (!conversation?.id) return;
+
         await chatService.markAsRead(conversation.id);
     }
 
@@ -29,11 +36,11 @@ export default function MessageList({ conversation, currentUserId }) {
     return (
         <div className="messages">
             {messages.map((m) => {
-                const isMine = String(m.sender?.id) === String(currentUserId);
+                const isMine = String(m.sender?.id || m.sender?._id) === String(currentUserId);
 
                 return (
                     <div
-                        key={m.id}
+                        key={m.id || m._id}
                         className={`message-row ${isMine ? "message-row--mine" : "message-row--other"}`}
                     >
                         <div className={`message-bubble ${isMine ? "message-bubble--mine" : "message-bubble--other"}`}>

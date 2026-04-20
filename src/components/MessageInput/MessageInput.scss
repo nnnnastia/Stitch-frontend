@@ -59,3 +59,88 @@
 .chat-input button:active {
     transform: scale(0.95);
 }
+
+.chat-input-wrap {
+    flex-shrink: 0;
+    border-top: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+.chat-input__previews {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px 0;
+    overflow-x: auto;
+}
+
+.chat-input__previewItem {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.chat-input__previewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.chat-input__previewRemove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+}
+
+.chat-input__attach {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 12px;
+    background: #f3f4f6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.chat-input__attach:hover {
+    background: #e5e7eb;
+}
+
+.chat-input input {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    outline: none;
+}
+
+.chat-input button[type="submit"],
+.chat-input>button:last-child {
+    flex-shrink: 0;
+}

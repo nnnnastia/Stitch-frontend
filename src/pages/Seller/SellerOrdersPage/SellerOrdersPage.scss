@@ -218,3 +218,34 @@
         color: #0f172a;
     }
 }
+
+.seller-orders__chatBtn {
+    margin-top: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 14px;
+
+    background: #10b981;
+    color: #fff;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.seller-orders__chatBtn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.seller-orders__chatBtn:active {
+    transform: scale(0.97);
+}

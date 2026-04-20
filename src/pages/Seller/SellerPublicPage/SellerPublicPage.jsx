@@ -8,10 +8,13 @@ import {
     Truck,
     CreditCard,
     Globe,
-    Send
+    Send,
+    MessageCircle,
 } from "lucide-react";
 import { sellerProfilesService } from "../../../services/sellerProfile.service";
+import { usersService } from "../../../services/users.service";
 import ProductCard from "../../../components/ProductCard/ProductCard";
+import { useChatStore } from "../../../store/chat.store";
 
 function normalizeProductsResponse(data) {
     if (Array.isArray(data)) return data;
@@ -26,14 +29,20 @@ export default function SellerPublicPage() {
 
     const [profile, setProfile] = useState(null);
     const [products, setProducts] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
 
     const [loading, setLoading] = useState(true);
     const [loadingProducts, setLoadingProducts] = useState(true);
-
     const [error, setError] = useState("");
 
     const [search, setSearch] = useState("");
     const [sort, setSort] = useState("");
+
+    const startChat = useChatStore((state) => state.startChat);
+
+    useEffect(() => {
+        loadCurrentUser();
+    }, []);
 
     useEffect(() => {
         let ignore = false;
@@ -50,9 +59,6 @@ export default function SellerPublicPage() {
                 ]);
 
                 if (ignore) return;
-
-                console.log("productsRes:", productsRes);
-                console.log("normalized products:", normalizeProductsResponse(productsRes));
 
                 setProfile(profileRes?.profile || null);
                 setProducts(normalizeProductsResponse(productsRes));
@@ -73,6 +79,51 @@ export default function SellerPublicPage() {
             ignore = true;
         };
     }, [slug]);
+
+    async function loadCurrentUser() {
+        try {
+            const res = await usersService.getMe();
+            setCurrentUser(res?.user || res || null);
+        } catch {
+            setCurrentUser(null);
+        }
+    }
+
+    async function handleContactSeller() {
+        if (!currentUser) {
+            alert("Щоб написати продавцю, потрібно увійти в акаунт");
+            return;
+        }
+
+        const sellerUserId =
+            profile?.sellerId ||
+            profile?.userId ||
+            profile?.user?._id ||
+            profile?.user?.id ||
+            null;
+
+        if (!sellerUserId) {
+            alert("Не вдалося визначити продавця для створення чату");
+            return;
+        }
+
+        const currentUserId = currentUser?.id || currentUser?._id;
+
+        if (String(currentUserId) === String(sellerUserId)) {
+            alert("Ви не можете написати самі собі");
+            return;
+        }
+
+        try {
+            await startChat({
+                sellerId: sellerUserId,
+                sourceType: "shop",
+            });
+        } catch (error) {
+            console.error(error);
+            alert(error?.message || "Не вдалося відкрити чат із продавцем");
+        }
+    }
 
     const filteredProducts = useMemo(() => {
         let result = [...products];
@@ -123,7 +174,9 @@ export default function SellerPublicPage() {
         return (
             <section className="seller-page">
                 <div className="seller-page__container">
-                    <div className="seller-page__status">Завантаження сторінки магазину...</div>
+                    <div className="seller-page__status">
+                        Завантаження сторінки магазину...
+                    </div>
                 </div>
             </section>
         );
@@ -154,8 +207,6 @@ export default function SellerPublicPage() {
         profile.payment?.cardOnline ? "Оплата карткою онлайн" : null,
         profile.payment?.cashOnDelivery ? "Післяплата" : null,
     ].filter(Boolean);
-
-
 
     return (
         <section className="seller-page">
@@ -206,6 +257,15 @@ export default function SellerPublicPage() {
                                 </div>
                             </div>
 
+                            <button
+                                type="button"
+                                className="seller-page__contactBtn"
+                                onClick={handleContactSeller}
+                            >
+                                <MessageCircle size={18} />
+                                <span>Написати продавцю</span>
+                            </button>
+
                             <div className="seller-page__meta">
                                 {profile.contacts?.city && (
                                     <div className="seller-page__metaItem">
@@ -248,7 +308,9 @@ export default function SellerPublicPage() {
                                 )}
 
                                 {!profile.contacts?.phone && !profile.contacts?.email && (
-                                    <div className="seller-card__empty">Контактні дані не вказані</div>
+                                    <div className="seller-card__empty">
+                                        Контактні дані не вказані
+                                    </div>
                                 )}
                             </div>
                         </div>
@@ -266,7 +328,9 @@ export default function SellerPublicPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="seller-card__empty">Способи доставки не вказані</div>
+                                <div className="seller-card__empty">
+                                    Способи доставки не вказані
+                                </div>
                             )}
                         </div>
 
@@ -283,7 +347,9 @@ export default function SellerPublicPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="seller-card__empty">Способи оплати не вказані</div>
+                                <div className="seller-card__empty">
+                                    Способи оплати не вказані
+                                </div>
                             )}
                         </div>
 
@@ -299,13 +365,13 @@ export default function SellerPublicPage() {
                                         className="seller-card__socialLink"
                                     >
                                         <Globe size={16} />
-                                        <span>Facebook</span>
+                                        <span>Сайт</span>
                                     </a>
                                 )}
 
-                                {profile.socials?.website && (
+                                {profile.socials?.instagram && (
                                     <a
-                                        href={profile.socials.website}
+                                        href={profile.socials.instagram}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="seller-card__socialLink"
@@ -322,7 +388,7 @@ export default function SellerPublicPage() {
                                         rel="noreferrer"
                                         className="seller-card__socialLink"
                                     >
-                                        <Globe size={16} /> {/* заміна */}
+                                        <Globe size={16} />
                                         <span>Facebook</span>
                                     </a>
                                 )}
@@ -343,19 +409,18 @@ export default function SellerPublicPage() {
                                     !profile.socials?.instagram &&
                                     !profile.socials?.facebook &&
                                     !profile.socials?.telegram && (
-                                        <div className="seller-card__empty">Посилання не вказані</div>
+                                        <div className="seller-card__empty">
+                                            Посилання не вказані
+                                        </div>
                                     )}
                             </div>
                         </div>
                     </aside>
 
                     <div className="seller-page__products">
-
                         <div className="seller-page__sectionHead">
                             <h2 className="seller-page__sectionTitle">Товари продавця</h2>
-                            {/* <div className="seller-page__sectionCount">
-                                {filteredProducts.length} товар(ів)
-                            </div> */}
+
                             <div className="seller-page__toolbar">
                                 <input
                                     className="seller-page__search"
@@ -378,8 +443,6 @@ export default function SellerPublicPage() {
                                     <option value="title_desc">За назвою Я-А</option>
                                 </select>
                             </div>
-
-
                         </div>
 
                         {loadingProducts ? (
@@ -391,7 +454,10 @@ export default function SellerPublicPage() {
                         ) : (
                             <div className="seller-page__productsGrid">
                                 {filteredProducts.map((product) => (
-                                    <div key={product.id || product._id} className="seller-page__productItem pCard--expand">
+                                    <div
+                                        key={product.id || product._id}
+                                        className="seller-page__productItem pCard--expand"
+                                    >
                                         <ProductCard p={product} />
                                     </div>
                                 ))}
