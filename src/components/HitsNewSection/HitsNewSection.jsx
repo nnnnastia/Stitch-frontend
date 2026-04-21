@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ProductCarousel from "../ProductCarousel/ProductCarousel";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/";
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const BADGE_BY_TAB = {
     hits: "Хіт",
@@ -22,7 +22,7 @@ export default function HitsNewSection() {
                 setLoading(true);
                 setError("");
 
-                const res = await fetch(`${API}api/products?limit=100`, {
+                const res = await fetch(`${API}/api/products?limit=100`, {
                     signal: controller.signal,
                 });
 
