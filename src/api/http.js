@@ -1,7 +1,6 @@
 import { clearAuthStorage } from "../utils/auth-storage";
 import {
     getIsLoggingOut,
-    hasSession,
     clearAuthSession,
 } from "../utils/auth-session";
 
@@ -51,7 +50,6 @@ export async function http(path, options = {}, retry = true) {
         retry &&
         !isRefreshRequest &&
         !isLogoutRequest &&
-        hasSession() &&
         !getIsLoggingOut()
     ) {
         try {

@@ -1,0 +1,71 @@
+.uploadZone {
+    position: relative;
+    width: 100%;
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    background: #f8fafc;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* avatar */
+.uploadZone:first-child {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+/* banner */
+.uploadZone:last-child {
+    height: 160px;
+}
+
+.uploadZone input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.uploadZone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* placeholder */
+.uploadZone__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* overlay */
+.uploadZone__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(11, 26, 51, 0.5);
+    color: #fff;
+    font-weight: 600;
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+/* hover */
+.uploadZone:hover .uploadZone__overlay {
+    opacity: 1;
+}
+
+/* drag */
+.uploadZone.is-drag {
+    border-color: #0b1a33;
+    background: #eef2ff;
+}

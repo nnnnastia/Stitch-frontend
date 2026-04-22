@@ -37,18 +37,19 @@
         }
     }
 
-    button {
-        padding: 10px 16px;
-        border-radius: 10px;
+    &__btn {
+        padding: 12px 24px;
+        border-radius: 999px;
         border: none;
-        background: #111827;
+        background: #0b1a33;
         color: #fff;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 500;
+        font-family: inherit;
         cursor: pointer;
 
         &:hover {
-            background: #000;
+            background: #1e293b;
         }
 
         &:disabled {

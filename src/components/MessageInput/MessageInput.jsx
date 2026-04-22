@@ -1,13 +1,14 @@
 import { useRef, useState } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { chatService } from "../../services/chat.service";
+import { useNotification } from "../NotificationContext/NotificationContext";
 
 export default function MessageInput({ conversation, onMessageSent }) {
     const [text, setText] = useState("");
     const [images, setImages] = useState([]);
     const [previews, setPreviews] = useState([]);
     const [sending, setSending] = useState(false);
-
+    const { showSuccess, showError } = useNotification();
     const fileInputRef = useRef(null);
 
     function handlePickImages() {
@@ -74,7 +75,7 @@ export default function MessageInput({ conversation, onMessageSent }) {
             }
         } catch (error) {
             console.error(error);
-            alert(error?.message || "Не вдалося надіслати повідомлення");
+            showError(error?.message || "Не вдалося надіслати повідомлення");
         } finally {
             setSending(false);
         }

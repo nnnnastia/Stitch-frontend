@@ -9,7 +9,7 @@ import { ApolloProvider } from "@apollo/client/react";
 import { apolloClient } from "./lib/apolloClient.js";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { NotificationProvider } from "./components/NotificationContext/NotificationContext.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +24,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ApolloProvider client={apolloClient}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
       </QueryClientProvider>
     </ApolloProvider>
   </BrowserRouter>

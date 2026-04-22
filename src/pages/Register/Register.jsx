@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import { Eye, EyeOff } from "lucide-react";
 import googleIcon from "../../assets/icon/google-icon.svg";
-import facebookIcon from "../../assets/icon/facebook-icon.png";
-import appleIcon from "../../assets/icon/apple-icon.svg";
+import { ArrowLeft } from "lucide-react";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -95,6 +94,21 @@ export default function Register() {
         <section className="register">
             <div className="container">
                 <div className="register__wrapper">
+                    <div className="register__top">
+                        <button
+                            type="button"
+                            className="register__back"
+                            onClick={() => {
+                                if (window.history.length > 1) {
+                                    navigate(-1);
+                                } else {
+                                    navigate("/");
+                                }
+                            }}
+                        >
+                            <ArrowLeft size={20} />
+                        </button>
+                    </div>
                     <h1 className="register__h1">Реєстрація</h1>
                     <p className="register__text">
                         Уже є акаунт?{" "}
@@ -194,7 +208,7 @@ export default function Register() {
                                 aria-label={showPassword ? "Приховати пароль" : "Показати пароль"}
                                 onClick={() => setShowPassword((prev) => !prev)}
                             >
-                                👁
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
 
@@ -217,7 +231,7 @@ export default function Register() {
                                 aria-label={showConfirmPassword ? "Приховати пароль" : "Показати пароль"}
                                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                             >
-                                👁
+                                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
 
@@ -243,14 +257,6 @@ export default function Register() {
                             }}>
                             <img src={googleIcon} alt="google" className="register__oauth-icon" />
                             Продовжити з Google
-                        </button>
-                        <button type="button" className="register__oauth-btn">
-                            <img src={facebookIcon} alt="facebook" className="register__oauth-icon" />
-                            Продовжити з Facebook
-                        </button>
-                        <button type="button" className="register__oauth-btn">
-                            <img src={appleIcon} alt="apple" className="register__oauth-icon" />
-                            Продовжити з Apple
                         </button>
                     </div>
                 </div>

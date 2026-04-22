@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { shippingService } from "../../services/shipping.service";
 import { ordersService } from "../../services/orders.service";
 import { paymentsService } from "../../services/payments.service";
+import { usersService } from "../../services/users.service";
 import { useCart } from "../../hooks/useCart";
+import { useNotification } from "../../components/NotificationContext/NotificationContext.jsx";
+import { fileUrl } from "../../utils/fileUrl.js";
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
     const { cart } = useCart();
-
+    const { showSuccess, showError } = useNotification();
     const [cityQuery, setCityQuery] = useState("");
     const [cities, setCities] = useState([]);
     const [selectedCity, setSelectedCity] = useState(null);
@@ -18,6 +21,7 @@ export default function CheckoutPage() {
 
     const [recipientFullName, setRecipientFullName] = useState("");
     const [recipientPhone, setRecipientPhone] = useState("");
+    const [recipientEmail, setRecipientEmail] = useState("");
     const [paymentMethod, setPaymentMethod] = useState("cod");
 
     const [loadingCities, setLoadingCities] = useState(false);
@@ -74,21 +78,49 @@ export default function CheckoutPage() {
         loadWarehouses();
     }, [selectedCity]);
 
+    useEffect(() => {
+        async function loadUserProfile() {
+            try {
+                const user = await usersService.getMe();
+
+                if (!user) return;
+
+                const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
+
+                if (fullName) {
+                    setRecipientFullName((prev) => prev || fullName);
+                }
+
+                if (user.phoneNumber) {
+                    setRecipientPhone((prev) => prev || user.phoneNumber);
+                }
+
+                if (user.email) {
+                    setRecipientEmail((prev) => prev || user.email);
+                }
+            } catch (error) {
+                console.error("Не вдалося підтягнути дані профілю", error);
+            }
+        }
+
+        loadUserProfile();
+    }, []);
+
     async function handleSubmit(e) {
         e.preventDefault();
 
         if (!items.length) {
-            alert("Кошик порожній");
+            showError("Кошик порожній");
             return;
         }
 
         if (!selectedCity || !selectedWarehouse) {
-            alert("Оберіть місто та відділення");
+            showError("Оберіть місто та відділення");
             return;
         }
 
         if (!recipientFullName.trim() || !recipientPhone.trim()) {
-            alert("Заповніть ПІБ та телефон");
+            showError("Заповніть ПІБ та телефон");
             return;
         }
 
@@ -105,6 +137,7 @@ export default function CheckoutPage() {
                     warehouseName: selectedWarehouse.name,
                     recipientFullName: recipientFullName.trim(),
                     recipientPhone: recipientPhone.trim(),
+                    recipientEmail: recipientEmail.trim(),
                 },
             });
 
@@ -125,11 +158,11 @@ export default function CheckoutPage() {
                 return;
             }
 
-            alert("Замовлення успішно оформлено");
-            navigate(`/orders/${orderId}`);
+            showSuccess("Замовлення успішно оформлено");
+            navigate(`/api/orders/me`);
         } catch (error) {
             console.error(error);
-            alert(error.message || "Помилка оформлення замовлення");
+            showError(error.message || "Помилка оформлення замовлення");
         } finally {
             setSubmitting(false);
         }
@@ -212,14 +245,25 @@ export default function CheckoutPage() {
                                     id="recipientFullName"
                                     value={recipientFullName}
                                     onChange={(e) => setRecipientFullName(e.target.value)}
+                                    placeholder="ПІБ отримувача"
                                     required
                                 />
 
-                                <label htmlFor="recipientPhone">Телефон</label>
+                                <label htmlFor="recipientPhone">Номер телефону</label>
                                 <input
                                     id="recipientPhone"
                                     value={recipientPhone}
                                     onChange={(e) => setRecipientPhone(e.target.value)}
+                                    placeholder="Номер телефону"
+                                    required
+                                />
+                                <label htmlFor="recipientEmail">Email</label>
+                                <input
+                                    id="recipientEmail"
+                                    type="email"
+                                    value={recipientEmail}
+                                    onChange={(e) => setRecipientEmail(e.target.value)}
+                                    placeholder="Email"
                                     required
                                 />
                             </div>
@@ -238,13 +282,19 @@ export default function CheckoutPage() {
                                 </select>
                             </div>
 
-                            <button type="submit" disabled={submitting}>
-                                {submitting
-                                    ? paymentMethod === "card"
-                                        ? "Переходимо до оплати..."
-                                        : "Оформлення..."
-                                    : "Підтвердити замовлення"}
-                            </button>
+                            <div className="checkout__actions">
+                                <button type="submit" disabled={submitting} className="checkout__submit">
+                                    {submitting
+                                        ? paymentMethod === "card"
+                                            ? "Переходимо до оплати..."
+                                            : "Оформлення..."
+                                        : "Підтвердити замовлення"}
+                                </button>
+
+                                <Link to="/catalog" className="checkout__back-btn">
+                                    Продовжити покупки
+                                </Link>
+                            </div>
                         </form>
 
                         <aside className="checkout__summary">
@@ -259,11 +309,29 @@ export default function CheckoutPage() {
                             <div className="checkout__items">
                                 {items.map((item) => (
                                     <div key={item.id} className="checkout__item">
-                                        <span>{item.product.title}</span>
-                                        <span>
-                                            {item.quantity} × {item.product.price}{" "}
-                                            {item.product.currency}
-                                        </span>
+                                        <div className="checkout__item-image">
+                                            <img
+                                                src={fileUrl(item.product.coverImage)}
+                                                alt={item.product.title}
+                                            />
+                                        </div>
+
+                                        <div className="checkout__item-info">
+                                            <Link
+                                                to={`/products/${item.product.id || item.product._id}`}
+                                                className="checkout__item-title"
+                                            >
+                                                {item.product.title}
+                                            </Link>
+
+                                            <div className="checkout__item-meta">
+                                                Кількість: {item.quantity}
+                                            </div>
+
+                                            <div className="checkout__item-price">
+                                                {item.quantity} × {item.product.price} {item.product.currency}
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

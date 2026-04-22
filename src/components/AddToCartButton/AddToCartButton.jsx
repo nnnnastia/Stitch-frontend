@@ -1,8 +1,10 @@
 import { useCart } from "../../hooks/useCart";
 import { ShoppingCart } from "lucide-react";
+import { useNotification } from "../NotificationContext/NotificationContext";
 
 export function AddToCartButton({ productId }) {
     const { addToCart, isAdding } = useCart();
+    const { showSuccess, showError } = useNotification();
 
     const handleAdd = async (e) => {
         e.preventDefault();
@@ -13,7 +15,7 @@ export function AddToCartButton({ productId }) {
             await addToCart({ productId, quantity: 1 });
         } catch (error) {
             console.error(error);
-            alert(error.message);
+            showError(error.message);
         }
     };
 

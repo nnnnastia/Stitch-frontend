@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { fileUrl } from "../../../utils/fileUrl";
 import Pagination from "../../../components/Pagination/Pagination";
+import { useNotification } from "../../../components/NotificationContext/NotificationContext";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -74,7 +75,7 @@ export default function SellerProductsPage() {
     const [view, setView] = useState("list");
     const [page, setPage] = useState(1);
     const limit = 5;
-
+    const { showSuccess, showError } = useNotification();
     const filteredProducts = useMemo(() => {
         const normalized = q.trim().toLowerCase();
 
@@ -113,10 +114,10 @@ export default function SellerProductsPage() {
             }
 
             const data = await res.json().catch(() => ({}));
-            alert(data.message || "Не вдалося видалити");
+            showError(data.message || "Не вдалося видалити");
         } catch (error) {
             console.error("DELETE PRODUCT ERROR:", error);
-            alert("Не вдалося видалити");
+            showError("Не вдалося видалити");
         }
     }
 

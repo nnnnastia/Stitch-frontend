@@ -1,0 +1,19 @@
+.auth-layout {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #f8fafc;
+}
+
+.login,
+.register {
+    width: 100%;
+}
+
+.login__wrapper,
+.register__wrapper {
+    width: 100%;
+    max-width: 440px;
+}

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { paymentsService } from "../../services/payments.service";
+import { useNotification } from "../NotificationContext/NotificationContext";
 
 export default function PayOrderButton({ orderId }) {
     const [loading, setLoading] = useState(false);
+    const { showSuccess, showError } = useNotification();
 
     const handlePay = async () => {
         try {
@@ -14,7 +16,7 @@ export default function PayOrderButton({ orderId }) {
             }
         } catch (error) {
             console.error(error);
-            alert("Не вдалося створити сесію оплати");
+            showError("Не вдалося створити сесію оплати");
         } finally {
             setLoading(false);
         }

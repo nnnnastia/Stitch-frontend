@@ -1,0 +1,77 @@
+.seller-account {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.seller-account__title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.seller-account__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+.seller-account__card h2 {
+    margin: 0 0 10px;
+}
+
+.seller-account__card input,
+.seller-account__card select {
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+}
+
+.seller-account__card--btn {
+    margin-top: 10px;
+    height: 42px;
+    border: none;
+    border-radius: 999px;
+    background: #0b1a33;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.seller-account__email-status {
+    font-size: 13px;
+    color: #64748b;
+}
+
+
+.password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 40px;
+    /* місце для іконки */
+}
+
+.password-field__toggle {
+    position: absolute;
+    right: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// .password-field__toggle:hover {
+//     color: #0f172a;
+// }

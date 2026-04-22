@@ -1,0 +1,16 @@
+.pCard__buy {
+    height: 44px;
+    width: 44px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+
+    background: rgba(0, 15, 34, 0.85);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 1000;
+
+    &:active {
+        transform: scale(0.97);
+    }
+}

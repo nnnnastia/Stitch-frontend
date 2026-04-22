@@ -241,10 +241,10 @@ export default function CatalogPage() {
                                 products.map((product) => (
                                     <Link
                                         key={product.id}
-                                        to={`/products/${product.id}`}
+                                        to={`/product/${product.id}`}
                                         className="catalog-grid__link"
                                     >
-                                        <article className="pCard">
+                                        <article className="pCard pCard--expand">
                                             <ProductCard p={product} />
                                         </article>
                                     </Link>

@@ -15,10 +15,16 @@ function StatusChip({ status }) {
     return <span className={`chip ${s.cls}`}>{s.label}</span>;
 }
 
-export default function SellerSidebar({ profile, stats }) {
+export default function SellerSidebar({ profile, stats, currentUser }) {
     const navigate = useNavigate();
-    console.log("sidebar profile:", profile);
-    console.log("sidebar storeSlug:", profile?.profile?.storeSlug);
+
+    const storeSlug = profile?.storeSlug || "";
+    const displayName = profile?.displayName || "Мій магазин";
+    const sellerName = profile?.displayName || "Продавець";
+    const avatarUrl =
+        profile?.avatarUrl ||
+        currentUser?.avatarUrl ||
+        null;
 
     async function handleLogout() {
         try {
@@ -36,9 +42,25 @@ export default function SellerSidebar({ profile, stats }) {
     return (
         <aside className="sellerNav">
             <div className="sellerNav__brand">
-                <div className="sellerNav__title">Кабінет продавця</div>
-                <div className="sellerNav__sub">
-                    {profile?.displayName || "Мій магазин"}
+                <div className="sellerNav__brandTop">
+                    <div className="sellerNav__avatarWrap">
+                        {avatarUrl ? (
+                            <img
+                                src={avatarUrl}
+                                alt={displayName}
+                                className="sellerNav__avatar"
+                            />
+                        ) : (
+                            <div className="sellerNav__avatarPlaceholder">
+                                {(displayName || sellerName).charAt(0).toUpperCase()}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="sellerNav__brandInfo">
+                        <div className="sellerNav__title">Кабінет продавця</div>
+                        <div className="sellerNav__sub">{displayName}</div>
+                    </div>
                 </div>
 
                 <div className="sellerNav__status">
@@ -65,12 +87,14 @@ export default function SellerSidebar({ profile, stats }) {
                     Налаштування магазину
                 </NavLink>
 
-                <NavLink
-                    to={`/shops/${profile?.profile?.storeSlug}`}
-                    className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
-                >
-                    Мій магазин
-                </NavLink>
+                {storeSlug && (
+                    <NavLink
+                        to={`/shops/${storeSlug}`}
+                        className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
+                    >
+                        Переглянути магазин
+                    </NavLink>
+                )}
 
                 <NavLink
                     to="/seller/orders"
@@ -80,10 +104,10 @@ export default function SellerSidebar({ profile, stats }) {
                 </NavLink>
 
                 <NavLink
-                    to="/seller/payment"
+                    to="/seller/account"
                     className={({ isActive }) => `navItem ${isActive ? "is-active" : ""}`}
                 >
-                    Оплата
+                    Особистий профіль
                 </NavLink>
 
                 <ProfileMenuItem

@@ -182,6 +182,12 @@
     }
 }
 
+.catalog-grid__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
 .catalog-pagination {
     display: flex;
     justify-content: center;

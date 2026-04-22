@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { sellerOrdersService } from "../../../services/sellerOrders.service.js";
 import { fileUrl } from "../../../utils/fileUrl.js";
 import { useChatStore } from "../../../store/chat.store.js";
+import { useNotification } from "../../../components/NotificationContext/NotificationContext.jsx";
 
 function formatPrice(value) {
     return new Intl.NumberFormat("uk-UA", {
@@ -48,7 +49,7 @@ export default function SellerOrdersPage() {
     const [error, setError] = useState("");
     const [updatingId, setUpdatingId] = useState("");
     const startChat = useChatStore((state) => state.startChat);
-
+    const { showSuccess, showError } = useNotification();
 
     useEffect(() => {
         let ignore = false;
@@ -89,7 +90,7 @@ export default function SellerOrdersPage() {
             });
         } catch (error) {
             console.error(error);
-            alert("Не вдалося відкрити чат з покупцем");
+            showError("Не вдалося відкрити чат з покупцем");
         }
     }
 
@@ -108,7 +109,7 @@ export default function SellerOrdersPage() {
                 )
             );
         } catch (err) {
-            alert(err.message || "Не вдалося оновити статус");
+            showError(err.message || "Не вдалося оновити статус");
         } finally {
             setUpdatingId("");
         }

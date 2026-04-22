@@ -15,13 +15,24 @@ import { sellerProfilesService } from "../../../services/sellerProfile.service";
 import { usersService } from "../../../services/users.service";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 import { useChatStore } from "../../../store/chat.store";
+import { Link } from "react-router-dom";
+import { useNotification } from "../../../components/NotificationContext/NotificationContext";
 
 function normalizeProductsResponse(data) {
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data?.items)) return data.items;
-    if (Array.isArray(data?.products)) return data.products;
-    if (Array.isArray(data?.data)) return data.data;
-    return [];
+    const items = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.items)
+            ? data.items
+            : Array.isArray(data?.products)
+                ? data.products
+                : Array.isArray(data?.data)
+                    ? data.data
+                    : [];
+
+    return items.map((product) => ({
+        ...product,
+        id: product.id || product._id,
+    }));
 }
 
 export default function SellerPublicPage() {
@@ -39,6 +50,7 @@ export default function SellerPublicPage() {
     const [sort, setSort] = useState("");
 
     const startChat = useChatStore((state) => state.startChat);
+    const { showSuccess, showError } = useNotification();
 
     useEffect(() => {
         loadCurrentUser();
@@ -91,7 +103,7 @@ export default function SellerPublicPage() {
 
     async function handleContactSeller() {
         if (!currentUser) {
-            alert("Щоб написати продавцю, потрібно увійти в акаунт");
+            showError("Щоб написати продавцю, потрібно увійти в акаунт");
             return;
         }
 
@@ -103,14 +115,14 @@ export default function SellerPublicPage() {
             null;
 
         if (!sellerUserId) {
-            alert("Не вдалося визначити продавця для створення чату");
+            showError("Не вдалося визначити продавця для створення чату");
             return;
         }
 
         const currentUserId = currentUser?.id || currentUser?._id;
 
         if (String(currentUserId) === String(sellerUserId)) {
-            alert("Ви не можете написати самі собі");
+            showError("Ви не можете написати самі собі");
             return;
         }
 
@@ -121,7 +133,7 @@ export default function SellerPublicPage() {
             });
         } catch (error) {
             console.error(error);
-            alert(error?.message || "Не вдалося відкрити чат із продавцем");
+            showError(error?.message || "Не вдалося відкрити чат із продавцем");
         }
     }
 
@@ -456,14 +468,16 @@ export default function SellerPublicPage() {
                         ) : (
                             <div className="seller-page__productsGrid">
                                 {filteredProducts.map((product) => (
-                                    <div
-                                        key={product.id || product._id}
+                                    <Link
+                                        key={product.id}
+                                        to={`/product/${product.id}`}
                                         className="seller-page__productItem pCard--expand"
                                     >
                                         <ProductCard p={product} />
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
+
                         )}
                     </div>
                 </div>

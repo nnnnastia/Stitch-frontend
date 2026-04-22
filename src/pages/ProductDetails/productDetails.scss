@@ -88,7 +88,7 @@
         flex-direction: column;
         gap: 15px;
 
-        
+
     }
 }
 
@@ -156,7 +156,7 @@
     background: #fff;
 
     button {
-         width: 42px;
+        width: 42px;
         height: 42px;
         background: transparent;
         border: none;
@@ -172,15 +172,17 @@
 }
 
 .product__buy {
-    min-height: 46px;
+
+    font-family: inherit;
     padding: 12px 24px;
     border-radius: 999px;
+    font-size: 14px;
     background: #0b1a33;
     color: #fff;
     border: none;
     cursor: pointer;
     transition: 0.25s;
-    font-weight: 600;
+    font-weight: 500;
 
     &:hover {
         background: #1e293b;
@@ -200,8 +202,8 @@
 /* DESCRIPTION */
 
 .product__description {
-    margin-top: 8px;
-    padding-top: 18px;
+    // margin-top: 8px;
+    padding-top: 10px;
     border-top: 1px solid #eef2f7;
 
     h3 {
@@ -226,8 +228,8 @@
 
 .product-details {
     &__seller {
-        margin-top: 15px;
-        padding: 16px;
+        margin-top: 10px;
+        padding: 12px;
         border: 1px solid #e5e7eb;
         border-radius: 16px;
         background: #fff;
@@ -275,17 +277,20 @@
     }
 
     &__sellerBtn {
-        padding: 10px 16px;
-        border-radius: 12px;
-        background: #19376d;
+        padding: 12px 24px;
+        border-radius: 999px;
+        background: #0b1a33;
         color: #fff;
         text-decoration: none;
         font-size: 14px;
         font-weight: 500;
         transition: 0.2s ease;
+        cursor: pointer;
+        transition: 0.25s;
+        font-family: inherit;
 
         &:hover {
-            background: #0b2447;
+            background: #1e293b;
         }
     }
 }

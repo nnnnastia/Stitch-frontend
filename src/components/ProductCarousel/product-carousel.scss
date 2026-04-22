@@ -26,10 +26,12 @@
 
 .hp__slider .swiper-button-prev,
 .hp__slider .swiper-button-next {
-    width: 20px;
-    height: 20px;
-    color: $blue-darkest;
-    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    color: black;
+    transform: translateY(-100%);
+    box-shadow: 0 8px 18px rgba(0, 15, 34, 0.08);
+
 }
 
 .hp__slider .swiper-button-prev::after,

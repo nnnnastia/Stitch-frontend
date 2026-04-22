@@ -67,7 +67,7 @@ export default function ReviewForm({ productId, onSuccess, initialData = null })
                 />
             </div>
 
-            <button type="submit" disabled={loading}>
+            <button className="review-form__btn" type="submit" disabled={loading}>
                 {loading ? "Збереження..." : initialData ? "Оновити відгук" : "Залишити відгук"}
             </button>
         </form>

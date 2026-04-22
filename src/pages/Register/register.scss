@@ -1,72 +1,62 @@
 @use "/src/sass/base/variables.scss" as *;
 
 .register {
-    padding-top: 30px;
-
-    &__h1 {
-        font-size: 20px;
-        font-weight: 600;
-        color: $blue-darkest;
-        margin: 0 19px;
-    }
-
-    &__text {
-        margin: 8px 0 0 19px;
-        font-size: 14px;
-        color: $blue-darkest;
-        font-weight: 400;
-        margin-bottom: 18px;
-
-        &-link {
-            font-weight: 600;
-            text-decoration: none;
-            color: inherit;
-        }
-    }
+    padding: 32px 0 56px;
 
     &__wrapper {
-        max-width: 420px;
+        max-width: 440px;
         margin: 0 auto;
+        padding: 24px 20px;
         background: #fff;
-        border: 1px solid #eef2f7;
-        border-radius: 18px;
-        padding: 18px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 22px;
         box-shadow: 0 18px 40px rgba(17, 24, 39, 0.06);
     }
 
+    &__h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.2;
+        color: $blue-darkest;
+    }
+
+    &__text {
+        margin: 8px 0 0;
+        font-size: 14px;
+        color: #4b5563;
+        line-height: 1.5;
+
+        &-link {
+            font-weight: 600;
+            color: $blue-darkest;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
     &__form {
+        margin-top: 18px;
         display: grid;
         gap: 12px;
-        margin-top: 14px;
-
     }
 
     &__role {
-
-        // width: 300px;
-        // margin: 0 auto;
-        // border: 1px solid #e5e7eb;
-        // background: #f3f4f6;
-        // border-radius: 14px;
-        // padding: 10px 12px;
-        // display: grid;
-        // gap: 8px;
-
-        width: 300px;
-        margin: 0 auto;
+        margin: 0;
         border: none;
         padding: 0;
+        min-width: 0;
     }
 
     &__label {
-        // font-size: 14px;
-        // font-weight: 600;
-        // color: $blue-darkest;
-        // margin-bottom: 2px;
+        display: block;
+        margin: 0 0 8px;
         font-size: 14px;
         font-weight: 600;
         color: $blue-darkest;
-        margin: 0 0 8px 7px;
     }
 
     &__segmented {
@@ -75,24 +65,28 @@
         gap: 8px;
         padding: 6px;
         border-radius: 14px;
-        background: #f3f4f6;
         border: 1px solid #e5e7eb;
+        background: #f3f4f6;
     }
 
     &__seg {
         position: relative;
-        height: 38px;
+        min-height: 40px;
         border-radius: 12px;
         display: grid;
         place-items: center;
         cursor: pointer;
         user-select: none;
-
         font-size: 14px;
         font-weight: 600;
         color: rgba(17, 24, 39, 0.75);
-
-        transition: transform .12s ease, background .2s ease, box-shadow .2s ease, color .2s ease;
+        transition:
+            transform 0.12s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease,
+            color 0.2s ease,
+            border-color 0.2s ease;
+        border: 1px solid transparent;
 
         input {
             position: absolute;
@@ -104,51 +98,35 @@
         &:active {
             transform: translateY(1px);
         }
-    }
 
-    &__seg.is-active {
-        background: #fff;
-        color: $blue-darkest;
-        box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
-        border: 1px solid rgba(17, 24, 39, 0.08);
+        &.is-active {
+            background: #fff;
+            color: $blue-darkest;
+            border-color: rgba(17, 24, 39, 0.08);
+            box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+        }
     }
 
     &__seg-text {
         pointer-events: none;
     }
 
-    &__option {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 14px;
-        color: $blue-darkest;
-        cursor: pointer;
-        user-select: none;
-
-        input[type="radio"] {
-            width: 16px;
-            height: 16px;
-            accent-color: $blue-darkest; // сучасний спосіб стилю radio
-            cursor: pointer;
-        }
-    }
-
     &__input {
-        width: 300px;
-        margin: 0 auto;
-        height: 45px;
-
+        width: 100%;
+        min-width: 0;
+        height: 46px;
+        padding: 0 14px;
         border-radius: 14px;
-        background: #f3f4f6;
         border: 1px solid #e5e7eb;
-
-        padding: 12px 14px;
+        background: #f3f4f6;
         color: $blue-darkest;
-        font-size: 14px;
+        font: inherit;
         line-height: 1.2;
-
-        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+        box-sizing: border-box;
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
 
         &::placeholder {
             color: #9ca3af;
@@ -164,19 +142,20 @@
 
     &__field {
         position: relative;
-        width: 300px;
-        margin: 0 auto;
-        height: 45px;
-
+        width: 100%;
+        min-width: 0;
+        min-height: 46px;
         display: flex;
         align-items: center;
-
         border-radius: 14px;
         background: #f3f4f6;
         border: 1px solid #e5e7eb;
-        padding: 12px 14px;
-
-        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+        padding: 0 14px;
+        box-sizing: border-box;
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
 
         &:focus-within {
             border-color: rgba(17, 24, 39, 0.35);
@@ -184,15 +163,13 @@
             background: #fff;
         }
 
-        /* щоб інпут всередині контейнера не мав своїх рамок */
         .register__input {
             width: 100%;
             height: auto;
             margin: 0;
-
+            padding: 0;
             border: none;
             box-shadow: none;
-            padding: 0;
             background: transparent;
 
             &:focus {
@@ -203,10 +180,8 @@
         }
     }
 
-    /* ===== Eye button ===== */
     &__eye-btn {
-        position: relative;
-        left: 8px;
+        margin-left: 8px;
 
         border: none;
         background: transparent;
@@ -214,30 +189,27 @@
         cursor: pointer;
         border-radius: 10px;
 
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #9ca3af;
+        transition: color 0.2s ease, background 0.2s ease;
+
+        &:hover {
+            background: rgba(17, 24, 39, 0.06);
+            color: $blue-darkest;
+        }
 
         &:active {
             transform: translateY(1px);
         }
     }
 
-    &__eye-icon {
-        font-size: 18px;
-        color: #9ca3af;
-        transition: color .2s ease;
-
-        .register__field:focus-within & {
-            color: $blue-darkest;
-        }
-    }
-
-    /* ===== Hint / Error ===== */
     &__hint {
-        width: 300px;
-        margin: -2px auto 0;
+        margin: -2px 0 0;
         font-size: 12px;
-        line-height: 1.2;
+        line-height: 1.3;
     }
 
     &__hint_ok {
@@ -249,36 +221,36 @@
     }
 
     &__error {
-        width: 300px;
-        margin: 0 auto;
         font-size: 13px;
         color: #dc2626;
         background: rgba(220, 38, 38, 0.08);
         border: 1px solid rgba(220, 38, 38, 0.18);
         border-radius: 12px;
         padding: 10px 12px;
+        line-height: 1.4;
     }
 
-    /* ===== Submit button ===== */
     &__btn {
-        margin: 6px auto;
-        width: 300px;
-        height: 45px;
-
+        width: 100%;
+        min-height: 46px;
+        margin-top: 4px;
         border: none;
         border-radius: 14px;
         padding: 12px 14px;
-
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
-
         background: $blue-darkest;
         color: #fff;
-
-        transition: transform .12s ease, opacity .12s ease, box-shadow .2s ease;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+            transform 0.12s ease,
+            opacity 0.12s ease,
+            box-shadow 0.2s ease,
+            background-color 0.2s ease;
 
         &:hover {
+            background: #1e293b;
             box-shadow: 0 10px 24px rgba(17, 24, 39, 0.18);
         }
 
@@ -294,20 +266,16 @@
         }
     }
 
-    // Divider "or"
     &__divider {
+        position: relative;
         display: grid;
         place-items: center;
-        margin: 18px 0 20px 14px;
-        position: relative;
-        width: 300px;
+        margin: 18px 0 16px;
 
         &::before {
             content: "";
             position: absolute;
-            left: 0;
-            right: 0;
-            top: 50%;
+            inset: 50% 0 auto;
             height: 1px;
             background: #e5e7eb;
             transform: translateY(-50%);
@@ -316,8 +284,8 @@
         span {
             position: relative;
             z-index: 1;
-            background: #fff;
             padding: 0 10px;
+            background: #fff;
             font-size: 12px;
             color: #9ca3af;
             text-transform: uppercase;
@@ -325,34 +293,35 @@
         }
     }
 
-    // OAuth buttons
     &__oauth {
         display: grid;
         gap: 12px;
     }
 
     &__oauth-btn {
-
-        width: 300px;
-        margin: 0 auto;
-        border-radius: 14px;
+        width: 100%;
+        min-height: 46px;
         padding: 12px 14px;
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
-
-        background: #fff;
+        border-radius: 14px;
         border: 1px solid #e5e7eb;
+        background: #fff;
         color: $blue-darkest;
-
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
         gap: 10px;
-        height: 45px;
-        transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+        transition:
+            transform 0.12s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease,
+            background-color 0.2s ease;
 
         &:hover {
+            background: #fafafa;
             border-color: rgba(17, 24, 39, 0.25);
             box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
         }
@@ -360,11 +329,74 @@
         &:active {
             transform: translateY(1px);
         }
-
     }
 
     &__oauth-icon {
         width: 20px;
         height: 20px;
+        flex-shrink: 0;
     }
+}
+
+@media (max-width: 480px) {
+    .register {
+        padding: 20px 0 40px;
+
+        &__wrapper {
+            padding: 18px 14px;
+            border-radius: 18px;
+        }
+
+        &__h1 {
+            font-size: 24px;
+        }
+
+        &__segmented {
+            gap: 6px;
+            padding: 5px;
+        }
+
+        &__seg {
+            min-height: 38px;
+            font-size: 13px;
+        }
+
+        &__input,
+        &__field,
+        &__btn,
+        &__oauth-btn {
+            min-height: 44px;
+        }
+    }
+}
+
+.register__top {
+    margin-bottom: 12px;
+}
+
+.register__back {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+
+    background: #fff;
+    color: #0b1a33;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.register__back:hover {
+    background: #f3f4f6;
+}
+
+.register__back:active {
+    transform: scale(0.96);
 }

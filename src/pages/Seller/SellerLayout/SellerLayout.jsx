@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SellerSidebar from "../../../components/SellerSidebar/SellerSidebar";
+import { usersService } from "../../../services/users.service";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function SellerLayout() {
     const [profile, setProfile] = useState(null);
     const [products, setProducts] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -27,9 +29,15 @@ export default function SellerLayout() {
             try {
                 setLoading(true);
 
-                const profileRes = await fetch(`${API}/api/seller/profile/me`, {
-                    credentials: "include",
-                });
+                const [profileRes, productsRes, userRes] = await Promise.all([
+                    fetch(`${API}/api/seller/profile/me`, {
+                        credentials: "include",
+                    }),
+                    fetch(`${API}/api/seller/products`, {
+                        credentials: "include",
+                    }),
+                    usersService.getMe(),
+                ]);
 
                 if (!alive) return;
 
@@ -41,29 +49,26 @@ export default function SellerLayout() {
                 if (!profileRes.ok) {
                     setProfile(null);
                     setProducts([]);
+                    setCurrentUser(userRes || null);
                     return;
                 }
 
                 const profileData = await profileRes.json();
-                setProfile(profileData);
+                setProfile(profileData?.profile || profileData || null);
 
-                const productsRes = await fetch(`${API}/api/seller/products`, {
-                    credentials: "include",
-                });
-
-                if (!alive) return;
-
-                if (!productsRes.ok) {
+                if (productsRes.ok) {
+                    const productsData = await productsRes.json();
+                    setProducts(productsData.items || productsData.products || []);
+                } else {
                     setProducts([]);
-                    return;
                 }
 
-                const productsData = await productsRes.json();
-                setProducts(productsData.items || productsData.products || []);
+                setCurrentUser(userRes || null);
             } catch (error) {
                 console.error("SELLER LAYOUT ERROR:", error);
                 setProfile(null);
                 setProducts([]);
+                setCurrentUser(null);
             } finally {
                 if (alive) {
                     setLoading(false);
@@ -95,10 +100,14 @@ export default function SellerLayout() {
         <section className="sellerApp">
             <div className="container">
                 <div className="sellerLayout">
-                    <SellerSidebar profile={profile} stats={stats} />
+                    <SellerSidebar
+                        profile={profile}
+                        stats={stats}
+                        currentUser={currentUser}
+                    />
 
                     <main className="sellerMain">
-                        <Outlet context={{ profile, stats, products, setProducts }} />
+                        <Outlet context={{ profile, stats, products, setProducts, currentUser }} />
                     </main>
                 </div>
             </div>

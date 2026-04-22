@@ -21,6 +21,26 @@ export const sellerProfilesService = {
         });
     },
 
+    async uploadAvatar(file) {
+        const formData = new FormData();
+        formData.append("avatar", file);
+
+        return http("/api/seller-profiles/me/avatar", {
+            method: "PATCH",
+            body: formData
+        });
+    },
+
+    async uploadBanner(file) {
+        const formData = new FormData();
+        formData.append("banner", file);
+
+        return http("/api/seller-profiles/me/banner", {
+            method: "PATCH",
+            body: formData
+        });
+    },
+
     async getPublicProfileBySlug(slug) {
         return http(`/api/seller-profiles/public/slug/${slug}`, {
             method: "GET"
