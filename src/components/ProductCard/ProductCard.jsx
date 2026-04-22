@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { fileUrl } from "../../utils/fileUrl.js";
 import { AddToCartButton } from "../AddToCartButton/AddToCartButton.jsx";
+import { useWishlist } from "../../hooks/useWishlist.js";
 
 const priceFormatter = new Intl.NumberFormat("uk-UA");
 
 export default function ProductCard({ p }) {
-    const [isFav, setIsFav] = useState(false);
     const [qty, setQty] = useState(1);
+    const { items, toggleWishlist, isToggling } = useWishlist();
 
     if (!p) return null;
 
+    const productId = p.id || p._id;
     const imageSrc = resolveImg(p);
+
+    const isFav = items.some((item) => {
+        const wishlistProductId =
+            item?.product?.id || item?.product?._id || item?.product;
+        return String(wishlistProductId) === String(productId);
+    });
 
     const dec = (e) => {
         blockCardNavigation(e);
@@ -22,15 +30,14 @@ export default function ProductCard({ p }) {
         setQty((q) => Math.min(99, q + 1));
     };
 
-    const addToCart = (e) => {
+    const toggleFav = async (e) => {
         blockCardNavigation(e);
-        console.log("ADD TO CART", p.id, qty);
-    };
 
-    const toggleFav = (e) => {
-        blockCardNavigation(e);
-        setIsFav((prev) => !prev);
-        console.log("TOGGLE FAV", p.id);
+        try {
+            await toggleWishlist(productId);
+        } catch (error) {
+            console.error("TOGGLE WISHLIST ERROR:", error);
+        }
     };
 
     return (
@@ -90,22 +97,14 @@ export default function ProductCard({ p }) {
                         </button>
                     </div>
 
-                    <AddToCartButton productId={p.id} />
-
-                    {/* <button
-                        className="pCard__buy"
-                        type="button"
-                        onClick={addToCart}
-                        aria-label="Додати в кошик"
-                    >
-                        <span className="icon-basket" />
-                    </button> */}
+                    <AddToCartButton productId={productId} quantity={qty} />
 
                     <button
                         className={`pCard__fav ${isFav ? "is-active" : ""}`}
                         type="button"
                         onClick={toggleFav}
-                        aria-label="В улюблені"
+                        aria-label={isFav ? "Прибрати з улюблених" : "В улюблені"}
+                        disabled={isToggling}
                     >
                         <span className={isFav ? "icon-heart-1" : "icon-heart-empty-1"} />
                     </button>

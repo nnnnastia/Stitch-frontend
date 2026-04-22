@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ShoppingCart, CameraIcon } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 import LanguageDropdown from "../LanguageDropdown/LanguageDropdown";
 import ProfileButton from "../ProfileButton/ProfileButton";
 import { useCart } from "../../hooks/useCart";
+import { useWishlist } from "../../hooks/useWishlist";
 import { usersService } from "../../services/users.service";
 import { searchByPhoto } from "../../services/search.service";
 import logo from "../../logo/logo4.png";
@@ -24,6 +25,7 @@ export default function Header() {
     const navigate = useNavigate();
     const [photoResults, setPhotoResults] = useState(null);
     const [loadingPhotoSearch, setLoadingPhotoSearch] = useState(false);
+
     const { data: user } = useQuery({
         queryKey: ["me"],
         queryFn: usersService.getMe,
@@ -32,8 +34,12 @@ export default function Header() {
     });
 
     const isAuthenticated = !!user;
+
     const { cart } = useCart(isAuthenticated);
     const totalItems = isAuthenticated ? (cart?.summary?.totalItems || 0) : 0;
+
+    const { items: wishlistItems } = useWishlist();
+    const totalWishlistItems = isAuthenticated ? wishlistItems.length : 0;
 
     const openMenu = () => setMenuOpen(true);
     const closeMenu = () => setMenuOpen(false);
@@ -52,8 +58,7 @@ export default function Header() {
             const result = await searchByPhoto(file);
             console.log(result);
 
-            setPhotoResults(result); // 🔥 головне
-
+            setPhotoResults(result);
         } catch (error) {
             console.error(error);
         } finally {
@@ -110,8 +115,17 @@ export default function Header() {
                     <div className="header__right">
                         <LanguageDropdown />
 
-                        <NavLink to="/favorites" className="uiIconBtn" aria-label="Favorites">
+                        <NavLink
+                            to="/profile/favorites"
+                            className="uiIconBtn uiIconBtn--favorites"
+                            aria-label="Favorites"
+                        >
                             <i className="icon-heart-1" />
+                            {totalWishlistItems > 0 && (
+                                <span className="uiBadge">
+                                    {totalWishlistItems > 99 ? "99+" : totalWishlistItems}
+                                </span>
+                            )}
                         </NavLink>
 
                         <button
@@ -122,7 +136,9 @@ export default function Header() {
                         >
                             <ShoppingCart size={20} />
                             {totalItems > 0 && (
-                                <span className="uiBadge">{totalItems}</span>
+                                <span className="uiBadge">
+                                    {totalItems > 99 ? "99+" : totalItems}
+                                </span>
                             )}
                         </button>
 

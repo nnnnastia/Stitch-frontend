@@ -7,6 +7,7 @@ import { ROUTES } from '../../constants/index.js';
 const SIDEBAR_LINKS = [
     { to: ROUTES.PROFILE, end: true, label: 'Акаунт' },
     { to: ROUTES.MYORDERS, label: 'Замовлення' },
+    { to: ROUTES.FAVORITES, label: 'Список бажань' }
 ];
 
 export function AccountSidebar({
@@ -94,11 +95,11 @@ export function AccountSidebar({
                         </li>
                     ))}
 
-                    <li>
+                    {/* <li>
                         <span className="account-sidebar__link account-sidebar__link--disabled">
                             Список бажань
                         </span>
-                    </li>
+                    </li> */}
 
                     <li>
                         <button

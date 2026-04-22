@@ -34,6 +34,7 @@ import CompleteGoogleSignupPage from './pages/CompleteGoogleSignupPage/CompleteG
 import PaymentSuccessPage from './pages/PaymentSuccessPage/PaymentSuccessPage.jsx';
 import PaymentCancelPage from './pages/PaymentCancelPage/PaymentCancelPage.jsx';
 import SellerAccountPage from './pages/Seller/SellerAccount/SellerAccountPage.jsx';
+import WishlistPage from './pages/User/WishlistPage/WishlistPage.jsx';
 
 function App() {
   const location = useLocation();
@@ -79,6 +80,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["user"]}>
                 <MyOrdersPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/favorites"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <WishlistPage />
               </ProtectedRoute>
             }
           />
