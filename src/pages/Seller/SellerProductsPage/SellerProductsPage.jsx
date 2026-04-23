@@ -4,7 +4,7 @@ import { fileUrl } from "../../../utils/fileUrl";
 import Pagination from "../../../components/Pagination/Pagination";
 import { useNotification } from "../../../components/NotificationContext/NotificationContext";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 function Badge({ text }) {
     const cls =

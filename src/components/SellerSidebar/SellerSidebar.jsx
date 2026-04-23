@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import ProfileMenuItem from "../../components/ProfileMenuItem/ProfileMenuItem.jsx";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 function StatusChip({ status }) {
     const map = {

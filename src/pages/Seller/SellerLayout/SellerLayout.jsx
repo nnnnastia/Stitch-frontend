@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SellerSidebar from "../../../components/SellerSidebar/SellerSidebar";
 import { usersService } from "../../../services/users.service";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 export default function SellerLayout() {
     const [profile, setProfile] = useState(null);

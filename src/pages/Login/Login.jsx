@@ -9,7 +9,7 @@ import { http } from "../../api/http";
 import { markAuthSession } from "../../utils/auth-session";
 import { useNotification } from "../../components/NotificationContext/NotificationContext";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 export default function Login() {
     const [email, setEmail] = useState("");

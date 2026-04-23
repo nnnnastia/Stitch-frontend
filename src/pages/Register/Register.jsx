@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import googleIcon from "../../assets/icon/google-icon.svg";
 import { ArrowLeft } from "lucide-react";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 const INITIAL_FORM = {
     userName: "",
@@ -253,7 +253,7 @@ export default function Register() {
                     <div className="register__oauth">
                         <button type="button" className="register__oauth-btn"
                             onClick={() => {
-                                window.location.href = "http://localhost:5000/api/auth/google/register";
+                                window.location.href = `${API}/api/auth/google/register`;
                             }}>
                             <img src={googleIcon} alt="google" className="register__oauth-icon" />
                             Продовжити з Google

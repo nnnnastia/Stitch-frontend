@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ProductCarousel from "../ProductCarousel/ProductCarousel";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 const BADGE_BY_TAB = {
     hits: "Хіт",

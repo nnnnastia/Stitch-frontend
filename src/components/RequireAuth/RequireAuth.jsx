@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 export default function RequireAuth({ children }) {
     const [loading, setLoading] = useState(true);

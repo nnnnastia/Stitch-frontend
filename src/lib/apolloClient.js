@@ -2,8 +2,15 @@ import { ApolloClient, InMemoryCache, HttpLink, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { Observable } from "@apollo/client/utilities";
 import { clearAuthStorage } from "../utils/auth-storage";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+if (!API_URL) {
+    throw new Error("VITE_API_URL is not defined");
+}
+
 const httpLink = new HttpLink({
-    uri: "http://localhost:5000/graphql",
+    uri: `${API_URL}/graphql`,
     credentials: "include",
 });
 
@@ -11,7 +18,7 @@ let refreshPromise = null;
 
 async function tryRefresh() {
     if (!refreshPromise) {
-        refreshPromise = fetch("http://localhost:5000/api/auth/refresh", {
+        refreshPromise = fetch(`${API_URL}/api/auth/refresh`, {
             method: "POST",
             credentials: "include",
         })

@@ -1,10 +1,17 @@
+const API_URL = import.meta.env.VITE_API_URL;
+
 export async function searchByPhoto(file) {
+    if (!API_URL) {
+        throw new Error("VITE_API_URL is not defined");
+    }
+
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("http://localhost:5000/api/search/by-photo", {
+    const res = await fetch(`${API_URL}/api/search/by-photo`, {
         method: "POST",
         body: formData,
+        credentials: "include",
     });
 
     const data = await res.json().catch(() => null);
