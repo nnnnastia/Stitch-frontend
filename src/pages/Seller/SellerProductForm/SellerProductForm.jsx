@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./SellerProductForm.scss";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const BADGES = ["Новинка", "Розпродаж", "Хіт"];
 
 export default function SellerProductForm({ mode = "create" }) {
@@ -29,7 +29,7 @@ export default function SellerProductForm({ mode = "create" }) {
     useEffect(() => {
         async function loadCategories() {
             try {
-                const res = await fetch(`${API_BASE}/categories`, {
+                const res = await fetch(`${API_BASE}/api/categories`, {
                     credentials: "include",
                 });
 
@@ -60,7 +60,7 @@ export default function SellerProductForm({ mode = "create" }) {
                 setLoading(true);
                 setError("");
 
-                const res = await fetch(`${API_BASE}/seller/products/${id}`, {
+                const res = await fetch(`${API_BASE}/api/seller/products/${id}`, {
                     credentials: "include",
                 });
 

@@ -2,7 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 
 export default function PaymentSuccessPage() {
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();s
 
     return (
         <section className="payment-result payment-result--success">

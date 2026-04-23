@@ -8,8 +8,7 @@ import ReviewForm from "../../components/ReviewForm/ReviewForm.jsx";
 import { Link } from "react-router-dom";
 import { Store, Star } from "lucide-react";
 import { cartService } from "../../services/cartService.js";
-import { useQueryClient } from "@tanstack/react-query";
-
+import { useQueryClient } from "@tanstack/react-query"; import { useNotification } from "../../components/NotificationContext/NotificationContext.jsx";
 const priceFormatter = new Intl.NumberFormat("uk-UA");
 
 function getStoredUser() {
@@ -24,7 +23,7 @@ export default function ProductDetails() {
     const { id } = useParams();
     const currentUser = getStoredUser();
     const queryClient = useQueryClient();
-
+    const { showSuccess, showError } = useNotification();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -92,7 +91,7 @@ export default function ProductDetails() {
             await refreshProduct();
         } catch (err) {
             console.error(err);
-            alert(err.message || "Не вдалося видалити відгук");
+            showError(err.message || "Не вдалося видалити відгук");
         }
     }
 

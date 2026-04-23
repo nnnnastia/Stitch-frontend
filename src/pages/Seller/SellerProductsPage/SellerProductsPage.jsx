@@ -117,7 +117,6 @@ export default function SellerProductsPage() {
             showError(data.message || "Не вдалося видалити");
         } catch (error) {
             console.error("DELETE PRODUCT ERROR:", error);
-            showError("Не вдалося видалити");
         }
     }
 
