@@ -159,7 +159,7 @@ export default function CheckoutPage() {
             }
 
             showSuccess("Замовлення успішно оформлено");
-            navigate(`/api/profile/orders`);
+            navigate(`/payment/success`);
         } catch (error) {
             console.error(error);
             showError(error.message || "Помилка оформлення замовлення");
