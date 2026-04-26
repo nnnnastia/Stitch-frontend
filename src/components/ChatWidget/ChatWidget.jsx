@@ -65,7 +65,6 @@ export default function ChatWidget() {
     async function loadUnread() {
         try {
             const res = await chatService.getUnreadCount();
-            console.log("getUnreadCount:", res);
             setUnreadCount(res.count || 0);
         } catch (e) {
             if (e?.status !== 401) {
