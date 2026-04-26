@@ -8,7 +8,7 @@ export async function searchByPhoto(file) {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch(`${API_URL}/api/search/by-photo`, {
+    const res = await fetch(`${API_URL}/api/search-by-photo`, {
         method: "POST",
         body: formData,
         credentials: "include",
