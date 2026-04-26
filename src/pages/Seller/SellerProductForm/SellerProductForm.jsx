@@ -143,8 +143,8 @@ export default function SellerProductForm({ mode = "create" }) {
             imagesFiles.forEach((file) => fd.append("images", file));
 
             const url = isEdit
-                ? `${API_BASE}/seller/products/${id}`
-                : `${API_BASE}/seller/products`;
+                ? `${API_BASE}/api/seller/products/${id}`
+                : `${API_BASE}/api/seller/products`;
 
             const method = isEdit ? "PATCH" : "POST";
 
