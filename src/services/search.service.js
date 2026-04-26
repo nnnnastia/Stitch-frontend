@@ -8,13 +8,17 @@ export async function searchByPhoto(file) {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch(`${API_URL}/api/search-by-photo`, {
+    const res = await fetch(`${API_URL}/api/search/by-photo`, {
         method: "POST",
         body: formData,
         credentials: "include",
     });
 
-    const data = await res.json().catch(() => null);
+    const contentType = res.headers.get("content-type") || "";
+
+    const data = contentType.includes("application/json")
+        ? await res.json().catch(() => null)
+        : null;
 
     if (!res.ok) {
         console.error("Search by photo error:", data);
